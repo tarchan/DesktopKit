@@ -616,23 +616,6 @@ public class EventQuery
 	}
 
 	/**
-	 * コンポーネントがフォーカスを失ったときのイベントハンドラを登録します。
-	 * 
-	 * @param target アクションを実行するオブジェクト
-	 * @param action ターゲット上の書き込み可能なプロパティまたはメソッドの名前
-	 * @param property 受信イベントの読み込み可能なプロパティの完全指定された名前 
-	 * @see FocusListener#focusLost(java.awt.event.FocusEvent)
-	 */
-	public void blur(Object target, String action, String property)
-	{
-		FocusListener handler = EventHandler.create(FocusListener.class, target, action, property, "focusLost");
-		for (Component child : list)
-		{
-			child.addFocusListener(handler);
-		}
-	}
-
-	/**
 	 * フォーカスを受け取ったとき
 	 * 
 	 * @param target アクションを実行するオブジェクト
@@ -643,6 +626,23 @@ public class EventQuery
 	public void focus(Object target, String action, String property)
 	{
 		FocusListener handler = EventHandler.create(FocusListener.class, target, action, property, "focusGained");
+		for (Component child : list)
+		{
+			child.addFocusListener(handler);
+		}
+	}
+
+	/**
+	 * コンポーネントがフォーカスを失ったときのイベントハンドラを登録します。
+	 * 
+	 * @param target アクションを実行するオブジェクト
+	 * @param action ターゲット上の書き込み可能なプロパティまたはメソッドの名前
+	 * @param property 受信イベントの読み込み可能なプロパティの完全指定された名前 
+	 * @see FocusListener#focusLost(java.awt.event.FocusEvent)
+	 */
+	public void blur(Object target, String action, String property)
+	{
+		FocusListener handler = EventHandler.create(FocusListener.class, target, action, property, "focusLost");
 		for (Component child : list)
 		{
 			child.addFocusListener(handler);
@@ -996,6 +996,7 @@ public class EventQuery
 				// 何もしない
 			}
 		}
+
 		return (T[])sublist.toArray();
 	}
 
