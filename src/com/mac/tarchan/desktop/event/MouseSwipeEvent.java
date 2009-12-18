@@ -1,10 +1,5 @@
 /*
- * MouseSwipeEvent.java
- * OwlPreview
- * 
- * Copyright(c)2009 NTT COMWARE BILLING SOLUTIONS CORPORATION All Rights Reserved.
- * 
- * 2009/08/26
+ * Copyright (c) 2009 tarchan. All rights reserved.
  */
 package com.mac.tarchan.desktop.event;
 
@@ -15,7 +10,7 @@ import java.text.DecimalFormat;
 /**
  * MouseSwipeEvent
  * 
- * @author v-togura
+ * @author tarchan
  */
 public class MouseSwipeEvent extends MouseEvent
 {

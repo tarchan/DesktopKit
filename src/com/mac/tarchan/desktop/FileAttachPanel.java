@@ -1,10 +1,5 @@
 /*
- * FileAttachPanel.java
- * OwlPreview
- * 
- * Copyright(c)2009 NTT COMWARE BILLING SOLUTIONS CORPORATION All Rights Reserved.
- * 
- * 2009/09/16
+ * Copyright (c) 2009 tarchan. All rights reserved.
  */
 package com.mac.tarchan.desktop;
 
@@ -24,7 +19,7 @@ import com.mac.tarchan.desktop.event.EventQuery;
 /**
  * FileAttachPanel
  * 
- * @author v-togura
+ * @author tarchan
  */
 public class FileAttachPanel extends JComponent
 {

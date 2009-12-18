@@ -1,10 +1,5 @@
 /*
- * MouseSwipeHandler.java
- * OwlPreview
- * 
- * Copyright(c)2009 NTT COMWARE BILLING SOLUTIONS CORPORATION All Rights Reserved.
- * 
- * 2009/08/26
+ * Copyright (c) 2009 tarchan. All rights reserved.
  */
 package com.mac.tarchan.desktop.event;
 
@@ -16,9 +11,9 @@ import java.util.ArrayList;
 /**
  * MouseSwipeHandler
  * 
- * @author v-togura
+ * @author tarchan
  */
-public class MouseSwipeHandler extends MouseAdapter implements MouseMotionListener
+public class MouseSwipeHandler extends MouseAdapter
 {
 	/** スワイプ開始イベント */
 	MouseEvent start;
@@ -41,18 +36,11 @@ public class MouseSwipeHandler extends MouseAdapter implements MouseMotionListen
 	/**
 	 * スワイプの継続
 	 */
+	@Override
 	public void mouseDragged(MouseEvent evt)
 	{
 		end = evt;
 		fireMouseSwipeEvent();
-	}
-
-	/* (非 Javadoc)
-	 * @see java.awt.event.MouseMotionListener#mouseMoved(java.awt.event.MouseEvent)
-	 */
-	public void mouseMoved(MouseEvent e)
-	{
-		// 未使用
 	}
 
 	/**

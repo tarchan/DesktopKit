@@ -1,10 +1,5 @@
 /*
- * DesktopSupport.java
- * ConfigPit
- * 
- * Copyright(c)2009 NTT COMWARE BILLING SOLUTIONS CORPORATION All Rights Reserved.
- * 
- * 2009/09/11
+ * Copyright (c) 2009 tarchan. All rights reserved.
  */
 package com.mac.tarchan.desktop;
 
@@ -16,7 +11,7 @@ import javax.swing.UIManager;
 /**
  * DesktopSupport
  * 
- * @author v-togura
+ * @author tarchan
  */
 public class DesktopSupport
 {
