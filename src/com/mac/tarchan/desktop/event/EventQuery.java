@@ -1,10 +1,5 @@
 /*
- * EventQuery.java
- * OwlPreview
- * 
- * Copyright(c)2009 NTT COMWARE BILLING SOLUTIONS CORPORATION All Rights Reserved.
- * 
- * 2009/08/12
+ * Copyright (c) 2009 tarchan. All rights reserved.
  */
 package com.mac.tarchan.desktop.event;
 
@@ -44,11 +39,9 @@ import org.apache.commons.logging.LogFactory;
 /**
  * EventQuery
  * 
- * @author v-togura
+ * @author tarchan
  * @see <a href="http://semooh.jp/jquery/api/events/">Events - jQuery 1.3.2 日本語リファレンス</a>
  * @see EventHandler
- * @see EventHandler#create(Class, Object, String, String, String)
- * @see Component#setName(String)
  */
 public class EventQuery
 {
@@ -982,7 +975,7 @@ public class EventQuery
 	 * @return コンポーネントの配列
 	 */
 	@SuppressWarnings("unchecked")
-	public <T extends Component> T[] list()
+	public <T> T[] list()
 	{
 		ArrayList<T> sublist = new ArrayList<T>();
 		for (Component child : list)

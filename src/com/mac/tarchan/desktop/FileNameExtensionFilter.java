@@ -1,10 +1,5 @@
 /*
- * FileNameExtensionFilter.java
- * DesktopKit
- * 
- * Copyright(c)2009 NTT COMWARE BILLING SOLUTIONS CORPORATION All Rights Reserved.
- * 
- * 2009/11/10
+ * Copyright (c) 2009 tarchan. All rights reserved.
  */
 package com.mac.tarchan.desktop;
 
@@ -16,7 +11,7 @@ import javax.swing.filechooser.FileFilter;
 /**
  * FileNameExtensionFilter
  * 
- * @author v-togura
+ * @author tarchan
  */
 public class FileNameExtensionFilter extends FileFilter
 {

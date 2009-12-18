@@ -1,10 +1,5 @@
 /*
- * AnyOption.java
- * Sample
- * 
- * Copyright(c)2009 NTT COMWARE BILLING SOLUTIONS CORPORATION All Rights Reserved.
- * 
- * 2009/07/23
+ * Copyright (c) 2009 tarchan. All rights reserved.
  */
 package com.mac.tarchan.desktop;
 
@@ -47,6 +42,7 @@ public class AnyOption
 	/** オペランド */
 	String[] operand;
 
+	/** リスト */
 	List<String> list;
 
 	/**

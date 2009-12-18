@@ -1,10 +1,5 @@
 /*
- * ConfigPit.java
- * ConfigPit
- * 
- * Copyright(c)2009 NTT COMWARE BILLING SOLUTIONS CORPORATION All Rights Reserved.
- * 
- * 2009/09/10
+ * Copyright (c) 2009 tarchan. All rights reserved.
  */
 package com.mac.tarchan.desktop;
 
@@ -12,10 +7,11 @@ import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
 
 /**
- * ConfigPit
+ * ConfigPit は、設定データの書き方を一般化します。
  * 
- * @author tarchan@gmail.com
- * @see Preferences#userRoot()
+ * @author tarchan
+ * @see <a href="http://perl-users.jp/modules/config_pit.html">パスワード設定をコードに書かない(Config::Pit) - モダンなPerl入門 - モダンなPerl入門</a>
+ * @see Preferences
  */
 public class ConfigPit
 {

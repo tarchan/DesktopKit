@@ -1,10 +1,5 @@
 /*
- * DoubleClickHandler.java
- * DesktopKit
- * 
- * Copyright(c)2009 NTT COMWARE BILLING SOLUTIONS CORPORATION All Rights Reserved.
- * 
- * 2009/12/16
+ * Copyright (c) 2009 tarchan. All rights reserved.
  */
 package com.mac.tarchan.desktop.event;
 
@@ -18,7 +13,7 @@ import org.apache.commons.logging.LogFactory;
 /**
  * DoubleClickHandler
  * 
- * @author v-togura
+ * @author tarchan
  */
 public class DoubleClickHandler extends MouseAdapter
 {
