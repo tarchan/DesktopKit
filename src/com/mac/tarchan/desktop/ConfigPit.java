@@ -6,6 +6,9 @@ package com.mac.tarchan.desktop;
 import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 /**
  * ConfigPit は、設定データの書き方を一般化します。
  * 
@@ -15,6 +18,12 @@ import java.util.prefs.Preferences;
  */
 public class ConfigPit
 {
+	/** ログ */
+	private static final Log log = LogFactory.getLog(ConfigPit.class);
+
+	/** 設定ノード */
+	protected Preferences prefs;
+
 	/**
 	 * 指定された設定ノードを読み込みます。
 	 * これは、次のような呼び出しと同じです。
@@ -28,6 +37,46 @@ public class ConfigPit
 	public static Preferences load(String pathName)
 	{
 		return Preferences.userRoot().node(pathName);
+	}
+
+	/**
+	 * 指定された設定ノードを読み込みます。
+	 * 
+	 * @param pathName 設定ノードのパス名
+	 * @return ConfigPit
+	 */
+	public static ConfigPit pit(String pathName)
+	{
+		ConfigPit pit = new ConfigPit();
+		pit.prefs = ConfigPit.load(pathName);
+		log.debug("prefs=" + pit.prefs.name());
+		return pit;
+	}
+
+	/**
+	 * 指定されたキーに関連付けられた値を返します。
+	 * キーに関連付けられた値がない場合は、入力ダイアログを表示します。
+	 * 入力ダイアログのタイトルは、この設定ノードの名前を表示します。
+	 * 
+	 * @param key キー
+	 * @param label 入力ダイアログのラベル
+	 * @return キーに関連付けられた値
+	 * @see InputBox#prompt(String, String, String)
+	 */
+	public String get(String key, Object label)
+	{
+		String value = prefs.get(key, null);
+		if (value == null)
+		{
+			value = InputBox.prompt(label, null, prefs.name());
+		}
+
+		return value;
+	}
+
+	public void set(String key, String value)
+	{
+		prefs.put(key, value);
 	}
 
 	/**
@@ -57,7 +106,9 @@ public class ConfigPit
 		}
 		catch (BackingStoreException x)
 		{
-			throw new IllegalStateException(x);
+			IllegalStateException ex = new IllegalStateException(x);
+			log.error(ex);
+			throw ex;
 		}
 	}
 
@@ -78,7 +129,9 @@ public class ConfigPit
 		}
 		catch (BackingStoreException x)
 		{
-			throw new IllegalStateException(x);
+			IllegalStateException ex = new IllegalStateException(x);
+			log.error(ex);
+			throw ex;
 		}
 	}
 
@@ -99,7 +152,7 @@ public class ConfigPit
 		}
 		catch (BackingStoreException x)
 		{
-			x.printStackTrace();
+			log.error("指定されたドメインの設定を削除できません。", x);
 		}
 
 		return false;
