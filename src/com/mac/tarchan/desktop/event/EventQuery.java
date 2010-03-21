@@ -45,6 +45,7 @@ import org.apache.commons.logging.LogFactory;
  */
 public class EventQuery
 {
+	/** ログ */
 	private static final Log log = LogFactory.getLog(EventQuery.class);
 
 	/** 親ノード */

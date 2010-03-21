@@ -42,8 +42,10 @@ public class InputBox
 	 * 警告ダイアログを表示します。
 	 * 
 	 * @param message メッセージ
+	 * @see JOptionPane#showMessageDialog(java.awt.Component, Object)
+	 * @see JOptionPane#INFORMATION_MESSAGE
 	 */
-	public static void alert(String message)
+	public static void alert(Object message)
 	{
 		JOptionPane.showMessageDialog(null, message);
 	}
@@ -53,8 +55,10 @@ public class InputBox
 	 * 
 	 * @param message メッセージ
 	 * @return OK の場合は true、そうでない場合は false
+	 * @see JOptionPane#showConfirmDialog(java.awt.Component, Object, String, int)
+	 * @see JOptionPane#QUESTION_MESSAGE
 	 */
-	public static boolean confirm(String message)
+	public static boolean confirm(Object message)
 	{
 		int inputValue = JOptionPane.showConfirmDialog(null, message,
 				UIManager.getString("OptionPane.titleText"), JOptionPane.OK_CANCEL_OPTION);
@@ -67,10 +71,28 @@ public class InputBox
 	 * @param message メッセージ
 	 * @param text 初期入力テキスト
 	 * @return OK の場合は入力したテキスト、そうでない場合は null
+	 * @see JOptionPane#showInputDialog(Object, Object)
+	 * @see JOptionPane#QUESTION_MESSAGE
 	 */
-	public static String prompt(String message, String text)
+	public static String prompt(Object message, Object text)
 	{
 		String inputValue = JOptionPane.showInputDialog(message, text);
+		return inputValue;
+	}
+
+	/**
+	 * 入力ダイアログを表示します。
+	 * 
+	 * @param message メッセージ
+	 * @param text 初期入力テキスト
+	 * @param title タイトル
+	 * @return OK の場合は入力したテキスト、そうでない場合は null
+	 * @see JOptionPane#showConfirmDialog(java.awt.Component, Object, String, int)
+	 * @see JOptionPane#QUESTION_MESSAGE
+	 */
+	public static String prompt(Object message, Object text, String title)
+	{
+		String inputValue = JOptionPane.showInputDialog(null, message, title, JOptionPane.QUESTION_MESSAGE);
 		return inputValue;
 	}
 
