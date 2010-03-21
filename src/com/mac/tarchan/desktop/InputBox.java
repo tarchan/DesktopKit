@@ -35,7 +35,7 @@ public class InputBox
 		UIManager.put("OptionPane.cancelButtonText", "キャンセル");
 		UIManager.put("OptionPane.inputDialogTitle", "");	// 入力
 		UIManager.put("OptionPane.messageDialogTitle", "");	// 警告
-		UIManager.put("OptionPane.titleText", "");		// 確認
+		UIManager.put("OptionPane.titleText", "");			// 確認
 	}
 
 	/**
@@ -61,7 +61,7 @@ public class InputBox
 	public static boolean confirm(Object message)
 	{
 		int inputValue = JOptionPane.showConfirmDialog(null, message,
-				UIManager.getString("OptionPane.titleText"), JOptionPane.OK_CANCEL_OPTION);
+			UIManager.getString("OptionPane.titleText"), JOptionPane.OK_CANCEL_OPTION);
 		return inputValue == JOptionPane.OK_OPTION;
 	}
 
