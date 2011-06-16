@@ -3,9 +3,9 @@
  */
 package com.mac.tarchan.desktop;
 
+import java.awt.EventQueue;
 import java.awt.Window;
 
-import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
 /**
@@ -17,6 +17,8 @@ public class DesktopSupport
 {
 	/**
 	 * システム Look&Feel を使用します。
+	 * 
+	 * @see UIManager#setLookAndFeel(String)
 	 */
 	public static void useSystemLookAndFeel()
 	{
@@ -32,6 +34,8 @@ public class DesktopSupport
 
 	/**
 	 * システムプロキシを使用します。
+	 * 
+	 * @see <a href="http://java.sun.com/javase/ja/6/docs/ja/technotes/guides/net/proxies.html">Java ネットワークとプロキシ </a>
 	 */
 	public static void useSystemProxies()
 	{
@@ -43,7 +47,7 @@ public class DesktopSupport
 	 */
 	public static void printEventDispatchThread()
 	{
-		boolean isEventDispatchThread = SwingUtilities. isEventDispatchThread();
+		boolean isEventDispatchThread = EventQueue.isDispatchThread();
 		if (isEventDispatchThread)
 		{
 			System.out.println("isEventDispatchThread: " + isEventDispatchThread + ", " + Thread.currentThread());
@@ -55,20 +59,42 @@ public class DesktopSupport
 	}
 
 	/**
-	 * ウインドウをイベントディスパッチスレッドで可視化します。
+	 * 指定されたオブジェクトをイベントディスパッチスレッドで実行します。
+	 * 
+	 * @param runnable 実行したいオブジェクト
+	 * @see EventQueue#invokeLater(Runnable)
+	 */
+	public static void invokeLater(Runnable runnable)
+	{
+		EventQueue.invokeLater(runnable);
+	}
+
+	/**
+	 * ウインドウを安全に表示します。
 	 * 
 	 * @param window ウインドウ
-	 * @see SwingUtilities#invokeLater(Runnable)
+	 * @see EventQueue#invokeLater(Runnable)
 	 */
-	public static void windowVisible(final Window window)
+	public static void show(final Window window)
 	{
-		SwingUtilities.invokeLater(new Runnable()
+		invokeLater(new Runnable()
 		{
 			public void run()
 			{
-				if (!SwingUtilities. isEventDispatchThread()) throw new IllegalStateException("Is Not EventDispatchThread");
 				window.setVisible(true);
 			}
 		});
+	}
+
+	/**
+	 * ウインドウを安全に表示します。
+	 * 
+	 * @param window ウインドウ
+	 * @see EventQueue#invokeLater(Runnable)
+	 * @deprecated {@link #show(Window)} を使用します。
+	 */
+	public static void windowVisible(final Window window)
+	{
+		show(window);
 	}
 }
