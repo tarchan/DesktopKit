@@ -59,14 +59,14 @@ public class DesktopSupport
 	}
 
 	/**
-	 * 指定されたオブジェクトをイベントディスパッチスレッドで実行します。
+	 * 指定されたコマンドをイベントディスパッチスレッドで実行します。
 	 * 
-	 * @param runnable 実行したいオブジェクト
+	 * @param command 実行したいコマンド
 	 * @see EventQueue#invokeLater(Runnable)
 	 */
-	public static void invokeLater(Runnable runnable)
+	public static void execute(Runnable command)
 	{
-		EventQueue.invokeLater(runnable);
+		EventQueue.invokeLater(command);
 	}
 
 	/**
@@ -77,7 +77,7 @@ public class DesktopSupport
 	 */
 	public static void show(final Window window)
 	{
-		invokeLater(new Runnable()
+		execute(new Runnable()
 		{
 			public void run()
 			{
