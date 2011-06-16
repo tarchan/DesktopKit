@@ -17,6 +17,7 @@ import java.awt.event.MouseMotionListener;
 import java.awt.event.TextListener;
 import java.beans.EventHandler;
 import java.beans.PropertyChangeListener;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -28,6 +29,7 @@ import java.util.Map;
 
 import javax.swing.AbstractButton;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 import javax.swing.MenuElement;
 import javax.swing.event.ListSelectionListener;
@@ -194,6 +196,7 @@ public class EventQuery
 			}
 		}
 //		System.out.format("list: %s\n", list(query.list));
+		log.debug(String.format("list: %s\n", list(query.list)));
 
 		return query;
 	}
@@ -262,6 +265,25 @@ public class EventQuery
 	}
 
 	/**
+	 * 現在のコンポーネントのリストを出力します。
+	 * 
+	 * @param out 出力ストリーム
+	 * @return このオブジェクト
+	 */
+	public EventQuery dump(PrintStream out)
+	{
+		String head = String.format("Parent: %s", parent);
+		out.println(head);
+		for (Component child : list)
+		{
+			String info = String.format("%s, %s", child.getName(), child.getClass().getName());
+			out.println(info);
+		}
+
+		return this;
+	}
+
+	/**
 	 * クリックイベントのハンドラを登録します。
 	 * 
 	 * @param handler ハンドラ
@@ -315,6 +337,10 @@ public class EventQuery
 			else if (child instanceof Button)
 			{
 				((Button)child).addActionListener(actionPerformed);
+			}
+			else if (child instanceof JTextField)
+			{
+				((JTextField)child).addActionListener(actionPerformed);
 			}
 			else
 			{
