@@ -73,7 +73,7 @@ public class EventQuery
 	 * @param child コンポーネント
 	 * @return アクションファクトリー
 	 */
-	public static EventQuery ready(Component... child)
+	public static EventQuery from(Component... child)
 	{
 		return new EventQuery(child);
 	}
@@ -126,6 +126,7 @@ public class EventQuery
 		if (names == null) throw new IllegalArgumentException("names");
 
 //		System.out.format("find: names=%s, list=(%s), parent=%s\n", Arrays.asList(names), list(list), parent);
+		log.debug(String.format("find: names=%s, list=(%s), parent=%s", Arrays.asList(names), list(list), parent));
 //		EventQuery action = EventQuery.ready(comp);
 		EventQuery query = new EventQuery();
 		query.parent = this;
@@ -150,6 +151,7 @@ public class EventQuery
 	 */
 	protected EventQuery find(Component base, String name)
 	{
+		log.debug(String.format("find: name=%s, list=(%s), parent=%s", name, list(list), parent));
 		if (base instanceof Container)
 		{
 			Container parent = (Container)base;
@@ -181,6 +183,7 @@ public class EventQuery
 		if (types == null) throw new IllegalArgumentException("types");
 
 //		System.out.format("find: types=%s ,list=(%s), parent=%s\n", Arrays.asList(types), list(list), parent);
+		log.debug(String.format("find: types=%s ,list=(%s), parent=%s", Arrays.asList(types), list(list), parent));
 		EventQuery query = new EventQuery();
 		query.parent = this;
 		for (Component child : list)

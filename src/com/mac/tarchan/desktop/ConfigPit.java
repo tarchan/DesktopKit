@@ -61,7 +61,7 @@ public class ConfigPit
 	 * @param key キー
 	 * @param label 入力ダイアログのラベル
 	 * @return キーに関連付けられた値
-	 * @see InputBox#prompt(String, String, String)
+	 * @see InputBox#prompt(Object, Object, String)
 	 */
 	public String get(String key, Object label)
 	{
@@ -74,6 +74,12 @@ public class ConfigPit
 		return value;
 	}
 
+	/**
+	 * 指定されたキーに対応する値を設定します。
+	 * 
+	 * @param key キー
+	 * @param value 値
+	 */
 	public void set(String key, String value)
 	{
 		prefs.put(key, value);
