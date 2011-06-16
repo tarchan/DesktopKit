@@ -27,8 +27,8 @@ public class FileNameExtensionFilter extends FileFilter
 	/**
 	 * 拡張子でフィルタリングします。
 	 * 
-	 * @param description
-	 * @param extensions
+	 * @param description フィルタ説明
+	 * @param extensions 拡張子
 	 */
 	public FileNameExtensionFilter(String description, String... extensions)
 	{

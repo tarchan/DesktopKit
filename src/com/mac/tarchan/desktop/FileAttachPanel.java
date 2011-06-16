@@ -55,7 +55,7 @@ public class FileAttachPanel extends JComponent
 		add(attachField, BorderLayout.CENTER);
 		add(attachButton, BorderLayout.EAST);
 
-		EventQuery.ready(this).find("attachFile").click(this);
+		EventQuery.from(this).find("attachFile").click(this);
 //		EventQuery.ready(chooser).change(this, "change", "");
 	}
 
@@ -157,7 +157,7 @@ public class FileAttachPanel extends JComponent
 	{
 //		this.attachFile = file;
 //		EventQuery.ready(this).find("attachName").text(file.getName());
-		EventQuery.ready(this).find("attachName").text(file.getPath());
+		EventQuery.from(this).find("attachName").text(file.getPath());
 	}
 
 	/**
@@ -177,7 +177,7 @@ public class FileAttachPanel extends JComponent
 	 */
 	public String getPath()
 	{
-		return EventQuery.ready(this).find("attachName").text();
+		return EventQuery.from(this).find("attachName").text();
 	}
 
 	/**
