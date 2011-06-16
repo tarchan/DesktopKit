@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2010 tarchan. All rights reserved.
  */
 package com.mac.tarchan.desktop;
