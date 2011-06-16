@@ -44,6 +44,7 @@ public class Mock
 	private Window createWindow()
 	{
 		JFrame window = new JFrame("Mock");
+		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		window.add(createPanel());
 		window.setSize(400, 300);
 
