@@ -15,6 +15,7 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 
 import com.mac.tarchan.desktop.DesktopSupport;
@@ -22,34 +23,36 @@ import com.mac.tarchan.desktop.InputBox;
 import com.mac.tarchan.desktop.event.EventQuery;
 
 /**
- * DesktopKit を使用したモックアプリケーションです。
+ * DesktopKit を使用したモックアップです。
  * 
  * @see DesktopSupport
  * @see EventQuery
  * @see InputBox
  */
-public class Mock
+public class MockApp
 {
 	/**
-	 * モックアプリケーションを起動します。
+	 * モックアップを起動します。
 	 * 
 	 * @param args なし
 	 */
 	public static void main(String[] args)
 	{
+		// TODO getopt (AnyOption.getOption().parse(args))
 		DesktopSupport.useSystemLookAndFeel();
-		DesktopSupport.show(new Mock().createWindow());
+		DesktopSupport.show(new MockApp().createWindow());
 	}
 
 	private Window createWindow()
 	{
-		JFrame window = new JFrame("Mock");
+		JFrame window = new JFrame("MockApp");
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		window.add(createPanel());
 		window.setSize(400, 300);
 
 		EventQuery.from(window)
-			.button().click(this, "onclick", "source.text").end();
+			.button().click(this, "onclick", "source.text").end()
+			.input().click(this, "onclick", "source.text").end();
 		return window;
 	}
 
@@ -68,6 +71,8 @@ public class Mock
 		group.add(radiobutton2);
 		JToggleButton togglebutton1 = new JToggleButton("ToggleButton1");
 
+		JTextField textfield1 = new JTextField(30);
+
 		JPanel main = new JPanel();
 		main.add(button1);
 		main.add(checkbox1);
@@ -78,6 +83,7 @@ public class Mock
 		main.add(radiobutton1);
 		main.add(radiobutton2);
 		main.add(togglebutton1);
+		main.add(textfield1);
 //		main.getRootPane().setDefaultButton(button1);
 		return main;
 	}
