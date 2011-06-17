@@ -22,28 +22,28 @@ import com.mac.tarchan.desktop.InputBox;
 import com.mac.tarchan.desktop.event.EventQuery;
 
 /**
- * DesktopKit を使用したモックアプリケーションです。
+ * DesktopKit を使用したモックアップです。
  * 
  * @see DesktopSupport
  * @see EventQuery
  * @see InputBox
  */
-public class Mock
+public class MockApp
 {
 	/**
-	 * モックアプリケーションを起動します。
+	 * モックアップを起動します。
 	 * 
 	 * @param args なし
 	 */
 	public static void main(String[] args)
 	{
 		DesktopSupport.useSystemLookAndFeel();
-		DesktopSupport.show(new Mock().createWindow());
+		DesktopSupport.show(new MockApp().createWindow());
 	}
 
 	private Window createWindow()
 	{
-		JFrame window = new JFrame("Mock");
+		JFrame window = new JFrame("MockApp");
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		window.add(createPanel());
 		window.setSize(400, 300);
