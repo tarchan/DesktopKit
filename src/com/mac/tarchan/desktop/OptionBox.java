@@ -32,6 +32,15 @@ public class OptionBox extends JDialog
 	/** ログ */
 	private static final Log log = LogFactory.getLog(OptionBox.class);
 
+	/** OKのキーストロークです。 */
+	public static final KeyStroke ENTER = KeyStroke.getKeyStroke("ENTER");
+
+	/** キャンセルのキーストロークです。 */
+	public static final KeyStroke ESCAPE = KeyStroke.getKeyStroke("ESCAPE");
+
+	/** キャンセルのキーストロークです。 */
+	public static final KeyStroke PERIOD = KeyStroke.getKeyStroke("meta PERIOD");
+
 	/** メインパネル */
 	protected JPanel mainBox = new JPanel();
 
@@ -119,16 +128,16 @@ public class OptionBox extends JDialog
 		ActionMap actionMap = mainBox.getActionMap();
 		actionMap.put(ok, ok);
 		actionMap.put(cancel, cancel);
-		InputMap inputMap = mainBox.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
 
-		KeyStroke key1 = KeyStroke.getKeyStroke("ENTER");
-		KeyStroke key2 = KeyStroke.getKeyStroke("ESCAPE");
-		KeyStroke key3 = KeyStroke.getKeyStroke("meta PERIOD");
-		inputMap.put(key1, ok);
-		inputMap.put(key2, cancel);
-		inputMap.put(key3, cancel);
+		InputMap inputMap = mainBox.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+		inputMap.put(ENTER, ok);
+		inputMap.put(ESCAPE, cancel);
+		inputMap.put(PERIOD, cancel);
 	}
 
+	/**
+	 * アクションボタンをフッタに追加します。
+	 */
 	protected void setActionBox()
 	{
 		Box actionBox = Box.createHorizontalBox();
