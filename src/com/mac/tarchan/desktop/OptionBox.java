@@ -4,6 +4,7 @@
 package com.mac.tarchan.desktop;
 
 import java.awt.BorderLayout;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -15,7 +16,6 @@ import javax.swing.InputMap;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 import javax.swing.border.EmptyBorder;
@@ -58,7 +58,7 @@ public class OptionBox extends JDialog
 	 * 
 	 * @param owner オーナーウインドウ
 	 */
-	public OptionBox(JFrame owner)
+	public OptionBox(Window owner)
 	{
 		super(owner);
 		mainBox.setBorder(new EmptyBorder(12, 12, 12, 12));
@@ -147,6 +147,7 @@ public class OptionBox extends JDialog
 		actionBox.add(Box.createHorizontalStrut(12));
 		actionBox.setBorder(new EmptyBorder(0, 12, 12, 12));
 		add(actionBox, BorderLayout.SOUTH);
+		getRootPane().setDefaultButton(okButton);
 	}
 
 	/**

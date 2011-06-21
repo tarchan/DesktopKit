@@ -20,6 +20,7 @@ import javax.swing.JToggleButton;
 
 import com.mac.tarchan.desktop.DesktopSupport;
 import com.mac.tarchan.desktop.InputBox;
+import com.mac.tarchan.desktop.OptionBox;
 import com.mac.tarchan.desktop.event.EventQuery;
 
 /**
@@ -43,6 +44,8 @@ public class MockApp
 		DesktopSupport.show(new MockApp().createWindow());
 	}
 
+	OptionBox option;
+
 	private Window createWindow()
 	{
 		JFrame window = new JFrame("MockApp");
@@ -50,9 +53,12 @@ public class MockApp
 		window.add(createPanel());
 		window.setSize(400, 300);
 
+		option = new OptionBox(window);
+
 		EventQuery.from(window)
 			.button().click(this, "onclick", "source.text").end()
 			.input().click(this, "onclick", "source.text").end();
+
 		return window;
 	}
 
@@ -96,5 +102,6 @@ public class MockApp
 	public void onclick(String text)
 	{
 		InputBox.alert("クリックしました。: " + text);
+		option.setVisible(true);
 	}
 }
