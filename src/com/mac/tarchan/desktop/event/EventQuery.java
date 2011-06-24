@@ -445,7 +445,7 @@ public class EventQuery
 	 * @see HierarchyListener#hierarchyChanged(HierarchyEvent)
 	 * @see HierarchyEvent
 	 */
-	public EventQuery ready(HierarchyListener handler)
+	public EventQuery ready(final HierarchyListener handler)
 	{
 //		ComponentListener componentHidden = EventHandler.create(ComponentListener.class, target, action, property, "componentHidden");
 //		for (Component child : list)
@@ -454,7 +454,13 @@ public class EventQuery
 //		}
 		for (Component child : list)
 		{
-			child.addHierarchyListener(handler);
+			child.addHierarchyListener(new HierarchyListener()
+			{
+				public void hierarchyChanged(HierarchyEvent e)
+				{
+					if (e.getChangeFlags() == HierarchyEvent.DISPLAYABILITY_CHANGED) handler.hierarchyChanged(e);
+				}
+			});
 		}
 		return this;
 	}
