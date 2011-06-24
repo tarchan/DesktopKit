@@ -1,5 +1,8 @@
 /*
- * Copyright (c) 2009 tarchan. All rights reserved.
+ * Copyright (c) 2009 tarchan
+ * All rights reserved.
+ * 
+ * Distributed under the BSD Software License (see LICENSE.txt) 
  */
 package com.mac.tarchan.desktop.event;
 
@@ -9,11 +12,10 @@ import java.text.DecimalFormat;
 
 /**
  * MouseSwipeEvent
- * 
- * @author tarchan
  */
 public class MouseSwipeEvent extends MouseEvent
 {
+	/** シリアルバージョンID */
 	private static final long serialVersionUID = 6816278805169429043L;
 
 	/** スワイプの方向 */

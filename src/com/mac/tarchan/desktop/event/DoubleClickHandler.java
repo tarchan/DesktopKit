@@ -1,5 +1,8 @@
 /*
- * Copyright (c) 2009 tarchan. All rights reserved.
+ * Copyright (c) 2009 tarchan
+ * All rights reserved.
+ * 
+ * Distributed under the BSD Software License (see LICENSE.txt) 
  */
 package com.mac.tarchan.desktop.event;
 
@@ -12,11 +15,10 @@ import org.apache.commons.logging.LogFactory;
 
 /**
  * DoubleClickHandler
- * 
- * @author tarchan
  */
 public class DoubleClickHandler extends MouseAdapter
 {
+	/** ログ */
 	private static final Log log = LogFactory.getLog(DoubleClickHandler.class);
 
 	/** イベントリスナー */

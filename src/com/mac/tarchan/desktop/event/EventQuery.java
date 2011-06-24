@@ -1,5 +1,8 @@
 /*
- * Copyright (c) 2009 tarchan. All rights reserved.
+ * Copyright (c) 2009 tarchan
+ * All rights reserved.
+ * 
+ * Distributed under the BSD Software License (see LICENSE.txt) 
  */
 package com.mac.tarchan.desktop.event;
 
@@ -41,8 +44,7 @@ import org.apache.commons.logging.LogFactory;
 /**
  * EventQuery
  * 
- * @author tarchan
- * @see <a href="http://semooh.jp/jquery/api/events/">Events - jQuery 1.3.2 日本語リファレンス</a>
+ * @see <a href="http://semooh.jp/jquery/api/events/">Events - jQuery 日本語リファレンス</a>
  * @see EventHandler
  */
 public class EventQuery
@@ -61,12 +63,9 @@ public class EventQuery
 	 * 
 	 * @param child コンポーネント
 	 */
-	protected EventQuery(Component... child)
+	public EventQuery(Component... child)
 	{
-//		this.comp = comp[0];
-//		list = new ArrayList<Component>();
-		list = new HashSet<Component>();
-		list.addAll(Arrays.asList(child));
+		list = new HashSet<Component>(Arrays.asList(child));
 	}
 
 	/**

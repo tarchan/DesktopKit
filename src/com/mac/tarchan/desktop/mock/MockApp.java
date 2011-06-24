@@ -1,5 +1,8 @@
 /*
- * Copyright (c) 2011 tarchan. All rights reserved.
+ * Copyright (c) 2011 tarchan
+ * All rights reserved.
+ * 
+ * Distributed under the BSD Software License (see LICENSE.txt) 
  */
 package com.mac.tarchan.desktop.mock;
 

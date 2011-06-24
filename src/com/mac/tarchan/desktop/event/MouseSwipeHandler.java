@@ -1,5 +1,8 @@
 /*
- * Copyright (c) 2009 tarchan. All rights reserved.
+ * Copyright (c) 2009 tarchan
+ * All rights reserved.
+ * 
+ * Distributed under the BSD Software License (see LICENSE.txt) 
  */
 package com.mac.tarchan.desktop.event;
 
@@ -10,8 +13,6 @@ import java.util.ArrayList;
 
 /**
  * MouseSwipeHandler
- * 
- * @author tarchan
  */
 public class MouseSwipeHandler extends MouseAdapter
 {
