@@ -23,7 +23,7 @@ import javax.swing.JToggleButton;
 
 import com.mac.tarchan.desktop.DesktopSupport;
 import com.mac.tarchan.desktop.InputBox;
-import com.mac.tarchan.desktop.OptionBox;
+//import com.mac.tarchan.desktop.OptionBox;
 import com.mac.tarchan.desktop.event.EventQuery;
 
 /**
@@ -47,7 +47,7 @@ public class MockApp
 		DesktopSupport.show(new MockApp().createWindow());
 	}
 
-	OptionBox option;
+//	OptionBox option;
 
 	private Window createWindow()
 	{
@@ -56,7 +56,7 @@ public class MockApp
 		window.add(createPanel());
 		window.setSize(400, 300);
 
-		option = new OptionBox(window);
+//		option = new OptionBox(window);
 
 		EventQuery.from(window)
 			.button().click(this, "onclick", "source.text").end()
@@ -75,10 +75,16 @@ public class MockApp
 		JList list1 = new JList(new String[]{"Apple", "Google"});
 		JRadioButton radiobutton1 = new JRadioButton("RadioButton1");
 		JRadioButton radiobutton2 = new JRadioButton("RadioButton2");
-		ButtonGroup group = new ButtonGroup();
-		group.add(radiobutton1);
-		group.add(radiobutton2);
-		JToggleButton togglebutton1 = new JToggleButton("ToggleButton1");
+		ButtonGroup radioGroup = new ButtonGroup();
+		radioGroup.add(radiobutton1);
+		radioGroup.add(radiobutton2);
+		JToggleButton togglebutton1 = new JToggleButton("One");
+		JToggleButton togglebutton2 = new JToggleButton("Two");
+		JToggleButton togglebutton3 = new JToggleButton("Three");
+		ButtonGroup toggleGroup = new ButtonGroup();
+		toggleGroup.add(togglebutton1);
+		toggleGroup.add(togglebutton2);
+		toggleGroup.add(togglebutton3);
 
 		JTextField textfield1 = new JTextField(30);
 
@@ -92,6 +98,8 @@ public class MockApp
 		main.add(radiobutton1);
 		main.add(radiobutton2);
 		main.add(togglebutton1);
+		main.add(togglebutton2);
+		main.add(togglebutton3);
 		main.add(textfield1);
 //		main.getRootPane().setDefaultButton(button1);
 		return main;
@@ -105,6 +113,6 @@ public class MockApp
 	public void onclick(String text)
 	{
 		InputBox.alert("クリックしました。: " + text);
-		option.setVisible(true);
+//		option.setVisible(true);
 	}
 }
