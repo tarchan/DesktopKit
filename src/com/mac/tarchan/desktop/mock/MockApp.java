@@ -8,6 +8,8 @@ package com.mac.tarchan.desktop.mock;
 
 import java.awt.Component;
 import java.awt.Window;
+import java.awt.event.HierarchyEvent;
+import java.awt.event.HierarchyListener;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -52,15 +54,31 @@ public class MockApp
 	private Window createWindow()
 	{
 		JFrame window = new JFrame("MockApp");
+		window.addHierarchyListener(new HierarchyListener()
+		{
+			public void hierarchyChanged(HierarchyEvent e)
+			{
+				System.out.println("hierarchyChanged: " + e);
+				if (e.getChangeFlags() == HierarchyEvent.DISPLAYABILITY_CHANGED)
+				{
+					System.out.println("packed: " + e);
+				}
+			}
+		});
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		System.out.println("window.add");
 		window.add(createPanel());
+		System.out.println("window.setSize");
 		window.setSize(400, 300);
+//		System.out.println("window.pack");
+//		window.pack();
 
 //		option = new OptionBox(window);
 
-		EventQuery.from(window)
+		 new EventQuery(window)
 			.button().click(this, "onclick", "source.text").end()
-			.input().click(this, "onclick", "source.text").end();
+			.input().click(this, "onclick", "source.text").end()
+			.ready(this, "onready", "changeFlags").end();
 
 		return window;
 	}
@@ -114,5 +132,17 @@ public class MockApp
 	{
 		InputBox.alert("クリックしました。: " + text);
 //		option.setVisible(true);
+	}
+
+	/**
+	 * onready
+	 * 
+	 * @param changeFlags 階層イベントの型を示すビットマスク
+	 * @see HierarchyEvent#DISPLAYABILITY_CHANGED
+	 * @see HierarchyEvent#SHOWING_CHANGED
+	 */
+	public void onready(long changeFlags)
+	{
+		System.out.printf("ready3: 0x%02x%n", changeFlags);
 	}
 }

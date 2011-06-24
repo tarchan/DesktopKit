@@ -14,6 +14,8 @@ import java.awt.TextComponent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentListener;
 import java.awt.event.FocusListener;
+import java.awt.event.HierarchyEvent;
+import java.awt.event.HierarchyListener;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -433,6 +435,44 @@ public class EventQuery
 		}
 
 		return this;
+	}
+
+	/**
+	 * フォーカスがリクエスト可能になったタイミングでハンドラを実行します。
+	 * 
+	 * @param handler ハンドラ
+	 * @return このオブジェクト
+	 * @see HierarchyListener#hierarchyChanged(HierarchyEvent)
+	 * @see HierarchyEvent
+	 */
+	public EventQuery ready(HierarchyListener handler)
+	{
+//		ComponentListener componentHidden = EventHandler.create(ComponentListener.class, target, action, property, "componentHidden");
+//		for (Component child : list)
+//		{
+//			child.addComponentListener(componentHidden);
+//		}
+		for (Component child : list)
+		{
+			child.addHierarchyListener(handler);
+		}
+		return this;
+	}
+
+	/**
+	 * フォーカスがリクエスト可能になったタイミングでハンドラを実行します。
+	 * 
+	 * @param target アクションを実行するオブジェクト
+	 * @param action ターゲット上の書き込み可能なプロパティまたはメソッドの名前
+	 * @param property 受信イベントの読み込み可能なプロパティの完全指定された名前 
+	 * @return このオブジェクト
+	 * @see HierarchyListener#hierarchyChanged(HierarchyEvent)
+	 * @see HierarchyEvent
+	 */
+	public EventQuery ready(Object target, String action, String property)
+	{
+		HierarchyListener hierarchyChanged = EventHandler.create(HierarchyListener.class, target, action, property, "hierarchyChanged");
+		return ready(hierarchyChanged);
 	}
 
 	/**
