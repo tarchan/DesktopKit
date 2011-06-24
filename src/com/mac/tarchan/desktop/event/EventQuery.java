@@ -442,6 +442,7 @@ public class EventQuery
 	 * 
 	 * @param handler ハンドラ
 	 * @return このオブジェクト
+	 * @see <a href="http://terai.xrea.jp/Swing/DefaultFocus.html ">Windowを開いたときのフォーカスを指定 - Java Swing Tips</a>
 	 * @see HierarchyListener#hierarchyChanged(HierarchyEvent)
 	 * @see HierarchyEvent
 	 */
