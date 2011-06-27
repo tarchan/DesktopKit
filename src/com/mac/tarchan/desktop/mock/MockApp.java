@@ -31,6 +31,7 @@ import javax.swing.JToggleButton;
 
 import com.mac.tarchan.desktop.DesktopSupport;
 import com.mac.tarchan.desktop.InputBox;
+import com.mac.tarchan.desktop.SexyControl;
 import com.mac.tarchan.desktop.event.EventQuery;
 
 /**
@@ -50,6 +51,8 @@ public class MockApp
 	public static void main(String[] args)
 	{
 		// TODO getopt (AnyOption.getOption().parse(args))
+		SexyControl.setAppleMenuAboutName("MockApp");
+		SexyControl.useScreenMenuBar();
 		DesktopSupport.useSystemLookAndFeel();
 		DesktopSupport.show(new MockApp().createWindow());
 	}
@@ -177,8 +180,9 @@ public class MockApp
 			window.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 			window.setBackground(new Color(0, true));
 			window.setUndecorated(true);
-			window.add(new ImageCanvas("arrow_linked_up.png"));
-			window.setVisible(true);
+			window.add(new ImageCanvas("rainbow.png"));
+//			window.setVisible(true);
+			DesktopSupport.show(window);
 		}
 		catch (IOException x)
 		{
