@@ -6,11 +6,17 @@
  */
 package com.mac.tarchan.desktop.mock;
 
+import java.awt.Color;
 import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.Window;
 import java.awt.event.HierarchyEvent;
 import java.awt.event.HierarchyListener;
+import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -25,7 +31,6 @@ import javax.swing.JToggleButton;
 
 import com.mac.tarchan.desktop.DesktopSupport;
 import com.mac.tarchan.desktop.InputBox;
-//import com.mac.tarchan.desktop.OptionBox;
 import com.mac.tarchan.desktop.event.EventQuery;
 
 /**
@@ -103,8 +108,10 @@ public class MockApp
 		toggleGroup.add(togglebutton1);
 		toggleGroup.add(togglebutton2);
 		toggleGroup.add(togglebutton3);
+		JButton button2 = new JButton("TransparentFrame");
 
 		JTextField textfield1 = new JTextField(30);
+		EventQuery.from(textfield1).ready(this, "onready_main", "");
 
 		JPanel main = new JPanel();
 		main.add(button1);
@@ -119,8 +126,64 @@ public class MockApp
 		main.add(togglebutton2);
 		main.add(togglebutton3);
 		main.add(textfield1);
+		main.add(button2);
 //		main.getRootPane().setDefaultButton(button1);
 		return main;
+	}
+
+	/**
+	 * フォーカスをリクエストします。
+	 * 
+	 * @param evt 階層イベント
+	 */
+	public void onready_main(HierarchyEvent evt)
+	{
+		System.out.printf("onready_main: %s%n", evt);
+		System.out.printf("onready_main: %s%n", evt.getSource());
+		Component main = (Component)evt.getSource();
+		main.requestFocusInWindow();
+	}
+
+	@SuppressWarnings("serial")
+	static class ImageCanvas extends JPanel
+	{
+		private Image image = null;
+		
+		public ImageCanvas(String filename) throws IOException
+		{
+			Image image = ImageIO.read(new File(filename));
+			setImage(image);
+		}
+
+		public void setImage(Image image)
+		{
+			this.image = image;
+		}
+
+		@Override
+		public void paintComponent(Graphics g)
+		{
+			if (image != null)  g.drawImage(image, 0, 0, this);
+		}
+	}
+
+	private void showTransparentFrame()
+	{
+		try
+		{
+			JFrame window = new JFrame("TransparentFrame");
+			window.setSize(128, 128);
+			window.setLocation(576, 336);
+			window.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+			window.setBackground(new Color(0, true));
+			window.setUndecorated(true);
+			window.add(new ImageCanvas("arrow_linked_up.png"));
+			window.setVisible(true);
+		}
+		catch (IOException x)
+		{
+			throw new RuntimeException("矩形ウインドウを作成できません。", x);
+		}
 	}
 
 	/**
@@ -130,7 +193,14 @@ public class MockApp
 	 */
 	public void onclick(String text)
 	{
-		InputBox.alert("クリックしました。: " + text);
+		if (text.equals("TransparentFrame"))
+		{
+			showTransparentFrame();
+		}
+		else
+		{
+			InputBox.alert("クリックしました。: " + text);
+		}
 //		option.setVisible(true);
 	}
 
