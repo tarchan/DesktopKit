@@ -10,11 +10,15 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.Window;
 import java.awt.event.HierarchyEvent;
 import java.awt.event.HierarchyListener;
-import java.io.File;
+import java.awt.image.BufferedImage;
+import java.awt.image.FilteredImageSource;
+import java.awt.image.RGBImageFilter;
 import java.io.IOException;
+import java.net.URL;
 
 import javax.imageio.ImageIO;
 import javax.swing.ButtonGroup;
@@ -33,6 +37,7 @@ import com.mac.tarchan.desktop.DesktopSupport;
 import com.mac.tarchan.desktop.InputBox;
 import com.mac.tarchan.desktop.SexyControl;
 import com.mac.tarchan.desktop.event.EventQuery;
+import com.sun.awt.AWTUtilities;
 
 /**
  * DesktopKit を使用したモックアップです。
@@ -53,6 +58,7 @@ public class MockApp
 		// TODO getopt (AnyOption.getOption().parse(args))
 		SexyControl.setAppleMenuAboutName("MockApp");
 		SexyControl.useScreenMenuBar();
+		DesktopSupport.useSystemProxies();
 		DesktopSupport.useSystemLookAndFeel();
 		DesktopSupport.show(new MockApp().createWindow());
 	}
@@ -154,8 +160,19 @@ public class MockApp
 		
 		public ImageCanvas(String filename) throws IOException
 		{
-			Image image = ImageIO.read(new File(filename));
-			setImage(image);
+			BufferedImage image = ImageIO.read(new URL(filename));
+			final int background = image.getRGB(0, 0);
+			Toolkit tk = Toolkit.getDefaultToolkit();
+			RGBImageFilter chromakey = new RGBImageFilter()
+			{
+				@Override
+				public int filterRGB(int x, int y, int rgb)
+				{
+					return rgb == background ? 0 : rgb;
+				}
+			};
+			Image img = tk.createImage(new FilteredImageSource(image.getSource(), chromakey));
+			setImage(img);
 		}
 
 		public void setImage(Image image)
@@ -175,13 +192,14 @@ public class MockApp
 		try
 		{
 			JFrame window = new JFrame("TransparentFrame");
-			window.setSize(128, 128);
+			window.setSize(512, 512);
 			window.setLocation(576, 336);
 			window.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-			window.setBackground(new Color(0, true));
+//			window.setBackground(new Color(0, true));
 			window.setUndecorated(true);
-			window.add(new ImageCanvas("rainbow.png"));
+			window.add(new ImageCanvas("http://a2.att.hudong.com/32/45/19300001150142130630457789150_950.jpg"));
 //			window.setVisible(true);
+			AWTUtilities.setWindowOpaque(window, false);
 			DesktopSupport.show(window);
 		}
 		catch (IOException x)
