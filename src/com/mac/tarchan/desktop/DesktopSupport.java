@@ -122,4 +122,16 @@ public class DesktopSupport
 	{
 		show(window);
 	}
+
+	/**
+	 * 指定されたコマンドをシャットダウン時に呼び出します。
+	 * 
+	 * @param command 実行したいコマンド
+	 * @see Runtime#addShutdownHook(Thread)
+	 */
+	public static void shutdown(Runnable command)
+	{
+		Thread hook = new Thread(command);
+		Runtime.getRuntime().addShutdownHook(hook);
+	}
 }
