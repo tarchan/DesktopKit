@@ -1,5 +1,11 @@
 package com.mac.tarchan.desktop.mock;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineFactory;
 import javax.script.ScriptEngineManager;
@@ -20,9 +26,13 @@ public class ScriptBox
 	{
 		try
 		{
-			new ScriptBox().getVersion().helloWorld().myName();
+			new ScriptBox().getVersion().helloWorld().myName().UserScript();
 		}
 		catch (ScriptException x)
+		{
+			throw new RuntimeException(x);
+		}
+		catch (IOException x)
 		{
 			throw new RuntimeException(x);
 		}
@@ -64,5 +74,27 @@ public class ScriptBox
 		System.out.println("username=" + vars.get("username"));
 		engine.eval("print('My name is ' + username + '.\\n');", vars);
 		return this;
+	}
+
+	ScriptBox UserScript() throws ScriptException, IOException
+	{
+		File dir = new File("userscript");
+		for (File file : dir.listFiles())
+		{
+			System.out.println(file);
+			UserScript(file);
+		}
+		return this;
+	}
+
+	void UserScript(File file) throws ScriptException, IOException
+	{
+		ScriptEngineManager manager = new ScriptEngineManager();
+		ScriptEngine engine = manager.getEngineByName("js");
+		SimpleBindings vars = new SimpleBindings();
+		vars.put("event", new Object());
+		BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF-8"));
+		engine.eval(in, vars);
+		in.close();
 	}
 }
