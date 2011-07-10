@@ -3,6 +3,8 @@
  */
 package com.mac.tarchan.desktop;
 
+import java.awt.Component;
+import java.awt.Container;
 import java.awt.EventQueue;
 import java.awt.Window;
 
@@ -56,6 +58,29 @@ public class DesktopSupport
 		{
 			System.err.println("isEventDispatchThread: " + isEventDispatchThread + ", " + Thread.currentThread());
 		}
+	}
+
+	/**
+	 * 指定されたクラスのオーナーコンテナを返します。
+	 * 
+	 * @param c コンポーネント
+	 * @return オーナーコンテナ
+	 */
+	public static <T> T componentOwner(Component c)
+	{
+		for (Container p = c.getParent(); p != null; p = p.getParent())
+		{
+			try
+			{
+				@SuppressWarnings("unchecked")
+				T owner = (T)p;
+				return owner;
+			}
+			catch (Throwable ignore)
+			{
+			}
+		}
+		return null;
 	}
 
 	/**

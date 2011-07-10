@@ -31,6 +31,7 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.JToggleButton;
+import javax.swing.SwingUtilities;
 
 import com.mac.tarchan.desktop.DesktopSupport;
 import com.mac.tarchan.desktop.InputBox;
@@ -235,5 +236,13 @@ public class MockApp
 	public void onready(long changeFlags)
 	{
 		System.out.printf("ready3: 0x%02x%n", changeFlags);
+	}
+
+	void findOwner(Component c)
+	{
+		Window w = SwingUtilities.windowForComponent(c);
+		System.out.printf("%s のウインドウは %s です。%n", c, w);
+		Window w2 = DesktopSupport.componentOwner(c);
+		System.out.printf("%s のウインドウは %s です。%n", c, w2);
 	}
 }
