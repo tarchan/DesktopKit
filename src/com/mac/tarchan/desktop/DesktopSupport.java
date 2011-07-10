@@ -61,17 +61,17 @@ public class DesktopSupport
 	}
 
 	/**
-	 * 指定されたクラス型のオーナーコンテナを返します。
+	 * 指定されたクラスに代入できるオーナーを返します。
 	 * 
-	 * @param c コンポーネント
-	 * @param type クラス型
-	 * @return オーナーコンテナ
+	 * @param component コンポーネント
+	 * @param type クラス
+	 * @return オーナー
 	 */
-	public static <T> T componentOwner(Component c, Class<T> type)
+	public static <T> T componentOwner(Component component, Class<T> type)
 	{
-		for (Container p = c.getParent(); p != null; p = p.getParent())
+		for (Container p = component.getParent(); p != null; p = p.getParent())
 		{
-			if (p.getClass() == type)
+			if (type.isInstance(p))
 			{
 				T owner = type.cast(p);
 				return owner;
