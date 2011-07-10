@@ -61,25 +61,23 @@ public class DesktopSupport
 	}
 
 	/**
-	 * 指定されたクラスのオーナーコンテナを返します。
+	 * 指定されたクラス型のオーナーコンテナを返します。
 	 * 
 	 * @param c コンポーネント
+	 * @param type クラス型
 	 * @return オーナーコンテナ
 	 */
-	public static <T> T componentOwner(Component c)
+	public static <T> T componentOwner(Component c, Class<T> type)
 	{
 		for (Container p = c.getParent(); p != null; p = p.getParent())
 		{
-			try
+			if (p.getClass() == type)
 			{
-				@SuppressWarnings("unchecked")
-				T owner = (T)p;
+				T owner = type.cast(p);
 				return owner;
 			}
-			catch (Throwable ignore)
-			{
-			}
 		}
+
 		return null;
 	}
 

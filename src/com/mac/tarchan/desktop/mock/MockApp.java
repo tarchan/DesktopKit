@@ -242,7 +242,7 @@ public class MockApp
 	{
 		Window w = SwingUtilities.windowForComponent(c);
 		System.out.printf("%s のウインドウは %s です。%n", c, w);
-		Window w2 = DesktopSupport.componentOwner(c);
+		Window w2 = DesktopSupport.componentOwner(c, Window.class);
 		System.out.printf("%s のウインドウは %s です。%n", c, w2);
 	}
 }
