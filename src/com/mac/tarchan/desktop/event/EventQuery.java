@@ -1038,10 +1038,23 @@ public class EventQuery
 	 * @return コンポーネント
 	 */
 	@SuppressWarnings("unchecked")
+	@Deprecated
 	public <T extends Component> T first()
 	{
 		Iterator<Component> it = list.iterator();
 		return it.hasNext() ? (T)it.next() : null;
+	}
+
+	/**
+	 * 最初のコンポーネントを返します。
+	 * 
+	 * @param type コンポーネントの型
+	 * @return コンポーネント
+	 */
+	public <T extends Component> T first(Class<T> type)
+	{
+		Iterator<Component> it = list.iterator();
+		return it.hasNext() ? type.cast(it.next()) : null;
 	}
 
 	/**
@@ -1051,6 +1064,7 @@ public class EventQuery
 	 * @return コンポーネントの配列
 	 */
 	@SuppressWarnings("unchecked")
+	@Deprecated
 	public <T> T[] list()
 	{
 		ArrayList<T> sublist = new ArrayList<T>();
@@ -1067,6 +1081,23 @@ public class EventQuery
 		}
 
 		return (T[])sublist.toArray();
+	}
+
+	/**
+	 * コンポーネントの配列を返します。
+	 * 
+	 * @param type コンポーネントの型
+	 * @return コンポーネントの配列
+	 */
+	public <T> List<T> list(Class<T> type)
+	{
+		ArrayList<T> sublist = new ArrayList<T>();
+		for (Component child : list)
+		{
+			sublist.add(type.cast(child));
+		}
+
+		return sublist;
 	}
 
 	/**
