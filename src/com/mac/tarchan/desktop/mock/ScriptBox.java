@@ -1,11 +1,11 @@
 package com.mac.tarchan.desktop.mock;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
+import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
+import java.util.Map;
 
+import javax.script.Invocable;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineFactory;
 import javax.script.ScriptEngineManager;
@@ -52,6 +52,9 @@ public class ScriptBox
 			System.out.println("  MimeTypes: " + factory.getMimeTypes());
 			System.out.println("  Names: " + factory.getNames());
 			System.out.println("  ScriptEngine: " + factory.getScriptEngine());
+			System.out.println("  Invocable: " + Invocable.class.isInstance(factory.getScriptEngine()));
+//			Invocable invocable = Invocable.class.cast(factory.getScriptEngine());
+//			invocable.invokeFunction("name", "args");
 		}
 
 		return this;
@@ -82,7 +85,7 @@ public class ScriptBox
 		for (File file : dir.listFiles())
 		{
 			System.out.println(file);
-			UserScript(file);
+			if (file.isFile()) UserScript(file);
 		}
 		return this;
 	}
@@ -93,8 +96,14 @@ public class ScriptBox
 		ScriptEngine engine = manager.getEngineByName("js");
 		SimpleBindings vars = new SimpleBindings();
 		vars.put("event", new Object());
-		BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF-8"));
+//		BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF-8"));
+		FileReader in = new FileReader(file);
 		engine.eval(in, vars);
+		for (Map.Entry<String, Object> entry : vars.entrySet())
+		{
+//			System.out.printf("%s=%s (%s)%n", entry.getKey(), entry.getValue(), entry.getValue().getClass());
+			System.out.printf("%s=(%s)%n", entry.getKey(), entry.getValue().getClass().getName());
+		}
 		in.close();
 	}
 }
