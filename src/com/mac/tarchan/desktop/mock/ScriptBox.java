@@ -5,12 +5,15 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Map;
 
+import javax.script.Compilable;
 import javax.script.Invocable;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineFactory;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 import javax.script.SimpleBindings;
+
+import com.mac.tarchan.desktop.script.UserScript;
 
 /**
  * JSBox
@@ -26,7 +29,7 @@ public class ScriptBox
 	{
 		try
 		{
-			new ScriptBox().getVersion().helloWorld().myName().UserScript();
+			new ScriptBox().getVersion().helloWorld().myName().userScript();
 		}
 		catch (ScriptException x)
 		{
@@ -44,6 +47,7 @@ public class ScriptBox
 		for (ScriptEngineFactory factory : manager.getEngineFactories())
 		{
 			System.out.println(factory);
+			System.out.println("================================");
 			System.out.println("  EngineName: " + factory.getEngineName());
 			System.out.println("  EngineVersion: " + factory.getEngineVersion());
 			System.out.println("  LanguageName: " + factory.getLanguageName());
@@ -53,8 +57,10 @@ public class ScriptBox
 			System.out.println("  Names: " + factory.getNames());
 			System.out.println("  ScriptEngine: " + factory.getScriptEngine());
 			System.out.println("  Invocable: " + Invocable.class.isInstance(factory.getScriptEngine()));
+			System.out.println("  Compilable: " + Compilable.class.isInstance(factory.getScriptEngine()));
 //			Invocable invocable = Invocable.class.cast(factory.getScriptEngine());
 //			invocable.invokeFunction("name", "args");
+			System.out.println("================================");
 		}
 
 		return this;
@@ -79,18 +85,19 @@ public class ScriptBox
 		return this;
 	}
 
-	ScriptBox UserScript() throws ScriptException, IOException
+	ScriptBox userScript() throws ScriptException, IOException
 	{
 		File dir = new File("userscript");
 		for (File file : dir.listFiles())
 		{
 			System.out.println(file);
-			if (file.isFile()) UserScript(file);
+//			if (file.isFile()) UserScript(file);
+			if (file.isFile()) new UserScript(file);
 		}
 		return this;
 	}
 
-	void UserScript(File file) throws ScriptException, IOException
+	ScriptBox userScript(File file) throws ScriptException, IOException
 	{
 		ScriptEngineManager manager = new ScriptEngineManager();
 		ScriptEngine engine = manager.getEngineByName("js");
@@ -105,5 +112,6 @@ public class ScriptBox
 			System.out.printf("%s=(%s)%n", entry.getKey(), entry.getValue().getClass().getName());
 		}
 		in.close();
+		return this;
 	}
 }
