@@ -1,5 +1,7 @@
 package com.mac.tarchan.desktop.mock;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
@@ -29,7 +31,7 @@ public class ScriptBox
 	{
 		try
 		{
-			new ScriptBox().getVersion().helloWorld().myName().userScript();
+			new ScriptBox().getVersion().helloWorld().myName().userScript().runnableImpl();
 		}
 		catch (ScriptException x)
 		{
@@ -112,6 +114,18 @@ public class ScriptBox
 			System.out.printf("%s=(%s)%n", entry.getKey(), entry.getValue().getClass().getName());
 		}
 		in.close();
+		return this;
+	}
+
+	ScriptBox runnableImpl() throws IOException, ScriptException
+	{
+		UserScript run = new UserScript(new File("userscript", "run.js"));
+		Runnable r = run.get(Runnable.class);
+		Thread th = new Thread(r);
+		th.start();
+		System.out.println("add(1,2)=" + run.invoke("add", 1, 2));
+		ActionListener a = run.get(ActionListener.class);
+		a.actionPerformed(new ActionEvent(this, 0, "テスト"));
 		return this;
 	}
 }

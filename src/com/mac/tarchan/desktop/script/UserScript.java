@@ -33,10 +33,10 @@ public class UserScript
 	 * UserScript
 	 * 
 	 * @param file スクリプトファイル
-	 * @throws IOException スクリプトファイルが読めない場合
 	 * @throws ScriptException スクリプトが実行できない場合
+	 * @throws IOException スクリプトファイルが読めない場合
 	 */
-	public UserScript(File file) throws IOException, ScriptException
+	public UserScript(File file) throws ScriptException, IOException
 	{
 		String extension = getExtension(file.getName());
 		ScriptEngineManager manager = new ScriptEngineManager();
@@ -179,12 +179,18 @@ public class UserScript
 	 * @param args ファンクションに渡される引数
 	 * @return ファンクションによって返される値
 	 * @throws ScriptException スクリプトの実行に失敗した場合
-	 * @throws NoSuchMethodException ファンクションが見つからない場合
 	 */
-	public Object invoke(String func, Object... args) throws ScriptException, NoSuchMethodException
+	public Object invoke(String func, Object... args) throws ScriptException
 	{
-		Invocable inv = Invocable.class.cast(engine);
-		return inv.invokeFunction(func, args);
+		try
+		{
+			Invocable inv = Invocable.class.cast(engine);
+			return inv.invokeFunction(func, args);
+		}
+		catch (NoSuchMethodException x)
+		{
+			throw new ScriptException(x);
+		}
 	}
 
 	/**
@@ -195,11 +201,17 @@ public class UserScript
 	 * @param args ファンクションに渡される引数
 	 * @return ファンクションによって返される値
 	 * @throws ScriptException スクリプトの実行に失敗した場合
-	 * @throws NoSuchMethodException ファンクションが見つからない場合
 	 */
-	public Object invoke(Object obj, String func, Object... args) throws ScriptException, NoSuchMethodException
+	public Object invoke(Object obj, String func, Object... args) throws ScriptException
 	{
-		Invocable inv = Invocable.class.cast(engine);
-		return inv.invokeMethod(obj, func, args);
+		try
+		{
+			Invocable inv = Invocable.class.cast(engine);
+			return inv.invokeMethod(obj, func, args);
+		}
+		catch (NoSuchMethodException x)
+		{
+			throw new ScriptException(x);
+		}
 	}
 }
