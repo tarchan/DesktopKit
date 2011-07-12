@@ -119,7 +119,9 @@ public class ScriptBox
 
 	ScriptBox runnableImpl() throws IOException, ScriptException
 	{
-		UserScript run = new UserScript(new File("userscript", "run.js"));
+		File js = new File("userscript", "run.js");
+		if (!js.exists()) return this;
+		UserScript run = new UserScript(js);
 		System.out.println(run.getScriptEngineInfo());
 		Runnable r = run.get(Runnable.class);
 		Thread th = new Thread(r);

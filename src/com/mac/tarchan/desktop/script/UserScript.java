@@ -32,15 +32,24 @@ public class UserScript
 	/**
 	 * UserScript
 	 * 
+	 * @param extension 拡張子
+	 */
+	public UserScript(String extension)
+	{
+		ScriptEngineManager manager = new ScriptEngineManager();
+		engine = manager.getEngineByExtension(extension);
+	}
+
+	/**
+	 * UserScript
+	 * 
 	 * @param file スクリプトファイル
 	 * @throws ScriptException スクリプトが実行できない場合
 	 * @throws IOException スクリプトファイルが読めない場合
 	 */
 	public UserScript(File file) throws ScriptException, IOException
 	{
-		String extension = getExtension(file.getName());
-		ScriptEngineManager manager = new ScriptEngineManager();
-		engine = manager.getEngineByExtension(extension);
+		this(getExtension(file.getName()));
 		FileReader reader = null;
 		try
 		{
