@@ -58,24 +58,24 @@ public class UserScript
 	}
 
 	/**
-	 * スクリプトエンジンを返します。
+	 * インタプリタを返します。
 	 * 
-	 * @return スクリプトエンジン
+	 * @return インタプリタ
 	 */
-	public ScriptEngine getEngine()
+	public ScriptEngine getScriptEngine()
 	{
 		return engine;
 	}
 
 	/**
-	 * スクリプトエンジンのバージョンを返します。
+	 * インタプリタの情報を返します。
 	 * 
-	 * @return バージョン
+	 * @return インタプリタの情報
 	 */
-	public String getEngineVersion()
+	public String getScriptEngineInfo()
 	{
 		ScriptEngineFactory factory = engine.getFactory();
-		return factory.getEngineName() + " " + factory.getEngineVersion();
+		return String.format("%s[%s, %s, %s, %s]", engine, factory.getEngineName(), factory.getEngineVersion(), factory.getLanguageName(), factory.getLanguageVersion());
 	}
 
 	/**
