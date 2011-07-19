@@ -18,6 +18,7 @@ import java.awt.image.FilteredImageSource;
 import java.awt.image.RGBImageFilter;
 import java.io.IOException;
 import java.net.URL;
+import java.util.EventObject;
 
 import javax.imageio.ImageIO;
 import javax.swing.ButtonGroup;
@@ -29,6 +30,7 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 import javax.swing.SwingUtilities;
@@ -81,7 +83,8 @@ public class MockApp
 		});
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		System.out.println("window.add");
-		window.add(createPanel());
+//		window.add(createPanel());
+		window.add(createTab());
 		System.out.println("window.setSize");
 		window.setSize(400, 300);
 //		System.out.println("window.pack");
@@ -89,12 +92,27 @@ public class MockApp
 
 //		option = new OptionBox(window);
 
-		 new EventQuery(window)
+		new EventQuery(window)
 			.button().click(this, "onclick", "source.text").end()
 			.input().click(this, "onclick", "source.text").end()
 			.ready(this, "onready", "changeFlags").end();
+		new EventQuery(window)
+//			.find(JTabbedPane.class).change(this, "onchange", "").end();
+			.find(JTabbedPane.class).change(this, "ontabchange", "source.selectedComponent").end();
 
 		return window;
+	}
+
+	private Component createTab()
+	{
+		JTabbedPane tab = new JTabbedPane();
+		Component main = createPanel();
+		main.setName("main");
+		Component sub = createPanel();
+		sub.setName("sub");
+		tab.add("Main", main);
+		tab.add("Sub", sub);
+		return tab;
 	}
 
 	private Component createPanel()
@@ -235,7 +253,27 @@ public class MockApp
 	 */
 	public void onready(long changeFlags)
 	{
-		System.out.printf("ready3: 0x%02x%n", changeFlags);
+		System.out.printf("onready3: 0x%02x%n", changeFlags);
+	}
+
+	/**
+	 * onchange
+	 * 
+	 * @param evt イベント
+	 */
+	public void onchange(EventObject evt)
+	{
+		System.out.printf("onchange: %s%n", evt);
+	}
+
+	/**
+	 * ontabchange
+	 * 
+	 * @param tab 選択されたタブ
+	 */
+	public void ontabchange(Component tab)
+	{
+		System.out.printf("ontabchange: %s%n", tab);
 	}
 
 	void findOwner(Component c)

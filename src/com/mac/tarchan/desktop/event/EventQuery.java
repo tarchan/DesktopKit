@@ -33,10 +33,12 @@ import java.util.List;
 import java.util.Map;
 
 import javax.swing.AbstractButton;
+import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 import javax.swing.MenuElement;
+import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.text.JTextComponent;
 
@@ -828,22 +830,27 @@ public class EventQuery
 	 * @see TextListener#textValueChanged(java.awt.event.TextEvent)
 	 * @see ListSelectionListener#valueChanged(javax.swing.event.ListSelectionEvent)
 	 * @see PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
+	 * @see ChangeListener#stateChanged(javax.swing.event.ChangeEvent)
 	 */
 	public EventQuery change(Object target, String action, String property)
 	{
 		TextListener textValueChanged = EventHandler.create(TextListener.class, target, action, property, "textValueChanged");
 		ListSelectionListener valueChanged = EventHandler.create(ListSelectionListener.class, target, action, property, "valueChanged");
 		PropertyChangeListener propertyChange = EventHandler.create(PropertyChangeListener.class, target, action, property, "propertyChange");
+		ChangeListener stateChanged = EventHandler.create(ChangeListener.class, target, action, property, "stateChanged");
 		for (Component child : list)
 		{
-//			child.addPropertyChangeListener(propertyChange);
-			if (child instanceof TextComponent)
+			if (TextComponent.class.isInstance(child))
 			{
-				((TextComponent)child).addTextListener(textValueChanged);
+				TextComponent.class.cast(child).addTextListener(textValueChanged);
 			}
-			else if (child instanceof JTable)
+			else if (JTable.class.isInstance(child))
 			{
-				((JTable)child).getSelectionModel().addListSelectionListener(valueChanged);
+				JTable.class.cast(child).getSelectionModel().addListSelectionListener(valueChanged);
+			}
+			else if (JTabbedPane.class.isInstance(child))
+			{
+				JTabbedPane.class.cast(child).addChangeListener(stateChanged);
 			}
 			else
 			{
