@@ -17,6 +17,8 @@ import java.awt.event.FocusListener;
 import java.awt.event.HierarchyEvent;
 import java.awt.event.HierarchyListener;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.TextListener;
@@ -289,28 +291,31 @@ public class EventQuery
 	/**
 	 * クリックイベントのハンドラを登録します。
 	 * 
-	 * @param handler ハンドラ
+	 * @param actionPerformed ハンドラ
 	 * @return このオブジェクト
 	 * @see ActionListener#actionPerformed(java.awt.event.ActionEvent)
 	 */
-	public EventQuery click(ActionListener handler)
+	public EventQuery click(ActionListener actionPerformed)
 	{
 		for (Component child : list)
 		{
-			if (child instanceof AbstractButton)
+			if (AbstractButton.class.isInstance(child))
 			{
-				((AbstractButton)child).addActionListener(handler);
+				AbstractButton.class.cast(child).addActionListener(actionPerformed);
 			}
-			else if (child instanceof Button)
+			else if (Button.class.isInstance(child))
 			{
-				((Button)child).addActionListener(handler);
+				Button.class.cast(child).addActionListener(actionPerformed);
+			}
+			else if (JTextField.class.isInstance(child))
+			{
+				JTextField.class.cast(child).addActionListener(actionPerformed);
 			}
 			else
 			{
 				// 何もしない
 			}
 		}
-
 		return this;
 	}
 
@@ -321,37 +326,37 @@ public class EventQuery
 	 * @param action ターゲット上の書き込み可能なプロパティまたはメソッドの名前
 	 * @param property 受信イベントの読み込み可能なプロパティの完全指定された名前 
 	 * @return このオブジェクト
-	 * @see ActionListener#actionPerformed(java.awt.event.ActionEvent)
-	 * @see MouseListener#mouseClicked(java.awt.event.MouseEvent)
+	 * @see #click(ActionListener)
 	 */
 	public EventQuery click(Object target, String action, String property)
 	{
 //		System.out.format("target: %s [%s]\n", target.getClass().getName(), action);
 		ActionListener actionPerformed = EventHandler.create(ActionListener.class, target, action, property, "actionPerformed");
-		MouseListener mouseClicked = EventHandler.create(MouseListener.class, target, action, property, "mouseClicked");
+//		MouseListener mouseClicked = EventHandler.create(MouseListener.class, target, action, property, "mouseClicked");
 //		click(handler);
-		for (Component child : list)
-		{
-//			System.out.format("click: %s [%s]\n", child.getName(), child.getClass().getName());
-			if (child instanceof AbstractButton)
-			{
-				((AbstractButton)child).addActionListener(actionPerformed);
-			}
-			else if (child instanceof Button)
-			{
-				((Button)child).addActionListener(actionPerformed);
-			}
-			else if (child instanceof JTextField)
-			{
-				((JTextField)child).addActionListener(actionPerformed);
-			}
-			else
-			{
-				child.addMouseListener(mouseClicked);
-			}
-		}
-
-		return this;
+//		for (Component child : list)
+//		{
+////			System.out.format("click: %s [%s]\n", child.getName(), child.getClass().getName());
+//			if (child instanceof AbstractButton)
+//			{
+//				((AbstractButton)child).addActionListener(actionPerformed);
+//			}
+//			else if (child instanceof Button)
+//			{
+//				((Button)child).addActionListener(actionPerformed);
+//			}
+//			else if (child instanceof JTextField)
+//			{
+//				((JTextField)child).addActionListener(actionPerformed);
+//			}
+//			else
+//			{
+//				child.addMouseListener(mouseClicked);
+//			}
+//		}
+//
+//		return this;
+		return click(actionPerformed);
 	}
 
 	/**
@@ -382,7 +387,30 @@ public class EventQuery
 			String action = child.getName();
 			if (action != null) find(action).click(target, action);
 		}
+		return this;
+	}
 
+	/**
+	 * ダブルクリックのハンドラを登録します。
+	 * 
+	 * @param mouseClicked ハンドラ
+	 * @return このオブジェクト
+	 * @see MouseListener#mouseClicked(java.awt.event.MouseEvent)
+	 */
+	public EventQuery dblclick(final MouseListener mouseClicked)
+	{
+		log.debug("dblclick=" + list);
+		for (Component child : list)
+		{
+			child.addMouseListener(new MouseAdapter()
+			{
+				@Override
+				public void mouseClicked(MouseEvent e)
+				{
+					if (e.getClickCount() == 2) mouseClicked.mouseClicked(e);
+				}
+			});
+		}
 		return this;
 	}
 
@@ -397,15 +425,15 @@ public class EventQuery
 	 */
 	public EventQuery dblclick(Object target, String action, String property)
 	{
-		log.debug("dblclick=" + list);
 		MouseListener mouseClicked = EventHandler.create(MouseListener.class, target, action, property, "mouseClicked");
-		DoubleClickHandler dblclickHandler = new DoubleClickHandler(mouseClicked);
-		for (Component child : list)
-		{
-			child.addMouseListener(dblclickHandler);
-		}
-
-		return this;
+//		DoubleClickHandler dblclickHandler = new DoubleClickHandler(mouseClicked);
+//		for (Component child : list)
+//		{
+//			child.addMouseListener(dblclickHandler);
+//		}
+//
+//		return this;
+		return dblclick(mouseClicked);
 	}
 
 	/**
@@ -435,33 +463,26 @@ public class EventQuery
 			String action = child.getName();
 			if (action != null) find(action).dblclick(target, action);
 		}
-
 		return this;
 	}
 
 	/**
 	 * フォーカスがリクエスト可能になったタイミングでハンドラを実行します。
 	 * 
-	 * @param handler ハンドラ
+	 * @param hierarchyChanged ハンドラ
 	 * @return このオブジェクト
 	 * @see <a href="http://terai.xrea.jp/Swing/DefaultFocus.html ">Windowを開いたときのフォーカスを指定 - Java Swing Tips</a>
 	 * @see HierarchyListener#hierarchyChanged(HierarchyEvent)
-	 * @see HierarchyEvent
 	 */
-	public EventQuery ready(final HierarchyListener handler)
+	public EventQuery ready(final HierarchyListener hierarchyChanged)
 	{
-//		ComponentListener componentHidden = EventHandler.create(ComponentListener.class, target, action, property, "componentHidden");
-//		for (Component child : list)
-//		{
-//			child.addComponentListener(componentHidden);
-//		}
 		for (Component child : list)
 		{
 			child.addHierarchyListener(new HierarchyListener()
 			{
 				public void hierarchyChanged(HierarchyEvent e)
 				{
-					if (e.getChangeFlags() == HierarchyEvent.DISPLAYABILITY_CHANGED) handler.hierarchyChanged(e);
+					if (e.getChangeFlags() == HierarchyEvent.DISPLAYABILITY_CHANGED) hierarchyChanged.hierarchyChanged(e);
 				}
 			});
 		}
@@ -506,35 +527,23 @@ public class EventQuery
 		}
 	}
 
-//	/**
-//	 * コンポーネント表示イベントのハンドラを登録します。
-//	 * 
-//	 * @param handler ハンドラ
-//	 * @see ComponentListener#componentShown(java.awt.event.ComponentEvent)
-//	 */
-//	public void show(ComponentListener handler)
-//	{
-//		for (Component child : list)
-//		{
-//			child.addComponentListener(handler);
-//		}
-//	}
-
 	/**
 	 * コンポーネント表示イベントのハンドラを登録します。
 	 * 
 	 * @param target アクションを実行するオブジェクト
 	 * @param action ターゲット上の書き込み可能なプロパティまたはメソッドの名前
 	 * @param property 受信イベントの読み込み可能なプロパティの完全指定された名前 
+	 * @return このオブジェクト
 	 * @see ComponentListener#componentShown(java.awt.event.ComponentEvent)
 	 */
-	public void show(Object target, String action, String property)
+	public EventQuery show(Object target, String action, String property)
 	{
 		ComponentListener componentShown = EventHandler.create(ComponentListener.class, target, action, property, "componentShown");
 		for (Component child : list)
 		{
 			child.addComponentListener(componentShown);
 		}
+		return this;
 	}
 
 	/**
@@ -542,11 +551,12 @@ public class EventQuery
 	 * 
 	 * @param target アクションを実行するオブジェクト
 	 * @param action ターゲット上の書き込み可能なプロパティまたはメソッドの名前
+	 * @return このオブジェクト
 	 * @see #show(Object, String, String)
 	 */
-	public void show(Object target, String action)
+	public EventQuery show(Object target, String action)
 	{
-		show(target, action, null);
+		return show(target, action, null);
 	}
 
 	/**
@@ -560,35 +570,23 @@ public class EventQuery
 		}
 	}
 
-//	/**
-//	 * コンポーネント不可視イベントのハンドラを登録します。
-//	 * 
-//	 * @param handler ハンドラ
-//	 * @see ComponentListener#componentHidden(java.awt.event.ComponentEvent)
-//	 */
-//	public void hide(ComponentListener handler)
-//	{
-//		for (Component child : list)
-//		{
-//			child.addComponentListener(handler);
-//		}
-//	}
-
 	/**
 	 * コンポーネント不可視イベントのハンドラを登録します。
 	 * 
 	 * @param target アクションを実行するオブジェクト
 	 * @param action ターゲット上の書き込み可能なプロパティまたはメソッドの名前
 	 * @param property 受信イベントの読み込み可能なプロパティの完全指定された名前 
+	 * @return このオブジェクト
 	 * @see ComponentListener#componentHidden(java.awt.event.ComponentEvent)
 	 */
-	public void hide(Object target, String action, String property)
+	public EventQuery hide(Object target, String action, String property)
 	{
 		ComponentListener componentHidden = EventHandler.create(ComponentListener.class, target, action, property, "componentHidden");
 		for (Component child : list)
 		{
 			child.addComponentListener(componentHidden);
 		}
+		return this;
 	}
 
 	/**
@@ -596,11 +594,12 @@ public class EventQuery
 	 * 
 	 * @param target アクションを実行するオブジェクト
 	 * @param action ターゲット上の書き込み可能なプロパティまたはメソッドの名前
+	 * @return このオブジェクト
 	 * @see #hide(Object, String, String)
 	 */
-	public void hide(Object target, String action)
+	public EventQuery hide(Object target, String action)
 	{
-		hide(target, action, null);
+		return hide(target, action, null);
 	}
 
 	/**
@@ -609,15 +608,17 @@ public class EventQuery
 	 * @param target アクションを実行するオブジェクト
 	 * @param action ターゲット上の書き込み可能なプロパティまたはメソッドの名前
 	 * @param property 受信イベントの読み込み可能なプロパティの完全指定された名前 
+	 * @return このオブジェクト
 	 * @see ComponentListener#componentResized(java.awt.event.ComponentEvent)
 	 */
-	public void resize(Object target, String action, String property)
+	public EventQuery resize(Object target, String action, String property)
 	{
 		ComponentListener componentResized = EventHandler.create(ComponentListener.class, target, action, property, "componentResized");
 		for (Component child : list)
 		{
 			child.addComponentListener(componentResized);
 		}
+		return this;
 	}
 
 	/**
@@ -626,31 +627,18 @@ public class EventQuery
 	 * @param target アクションを実行するオブジェクト
 	 * @param action ターゲット上の書き込み可能なプロパティまたはメソッドの名前
 	 * @param property 受信イベントの読み込み可能なプロパティの完全指定された名前 
+	 * @return このオブジェクト
 	 * @see ComponentListener#componentMoved(java.awt.event.ComponentEvent)
 	 */
-	public void move(Object target, String action, String property)
+	public EventQuery move(Object target, String action, String property)
 	{
 		ComponentListener componentMoved = EventHandler.create(ComponentListener.class, target, action, property, "componentMoved");
 		for (Component child : list)
 		{
 			child.addComponentListener(componentMoved);
 		}
+		return this;
 	}
-
-//	/**
-//	 * コンポーネント上にマウスカーソルが乗ったときと、外れたときにイベントハンドラを実行します。
-//	 * 
-//	 * @param handler イベントハンドラ
-//	 * @see MouseListener#mouseEntered(java.awt.event.MouseEvent)
-//	 * @see MouseListener#mouseExited(java.awt.event.MouseEvent)
-//	 */
-//	public void hover(MouseListener handler)
-//	{
-//		for (Component child : list)
-//		{
-//			child.addMouseListener(handler);
-//		}
-//	}
 
 	/**
 	 * コンポーネント上にマウスカーソルが乗ったときと、外れたときにイベントハンドラを実行します。
@@ -659,10 +647,11 @@ public class EventQuery
 	 * @param overAction マウスカーソルが乗ったときの、ターゲット上の書き込み可能なプロパティまたはメソッドの名前
 	 * @param outAction マウスカーソルが外れたときの、ターゲット上の書き込み可能なプロパティまたはメソッドの名前
 	 * @param property 受信イベントの読み込み可能なプロパティの完全指定された名前 
+	 * @return このオブジェクト
 	 * @see MouseListener#mouseEntered(java.awt.event.MouseEvent)
 	 * @see MouseListener#mouseExited(java.awt.event.MouseEvent)
 	 */
-	public void hover(Object target, String overAction, String outAction, String property)
+	public EventQuery hover(Object target, String overAction, String outAction, String property)
 	{
 		MouseListener mouseEntered = EventHandler.create(MouseListener.class, target, overAction, property, "mouseEntered");
 		MouseListener mouseExited = EventHandler.create(MouseListener.class, target, outAction, property, "mouseExited");
@@ -671,6 +660,7 @@ public class EventQuery
 			child.addMouseListener(mouseEntered);
 			child.addMouseListener(mouseExited);
 		}
+		return this;
 	}
 
 	/**
@@ -679,11 +669,12 @@ public class EventQuery
 	 * @param target アクションを実行するオブジェクト
 	 * @param overAction マウスカーソルが乗ったときの、ターゲット上の書き込み可能なプロパティまたはメソッドの名前
 	 * @param outAction マウスカーソルが外れたときの、ターゲット上の書き込み可能なプロパティまたはメソッドの名前
+	 * @return このオブジェクト
 	 * @see #hover(Object, String, String, String)
 	 */
-	public void hover(Object target, String overAction, String outAction)
+	public EventQuery hover(Object target, String overAction, String outAction)
 	{
-		hover(target, overAction, outAction, null);
+		return hover(target, overAction, outAction, null);
 	}
 
 	/**
@@ -692,15 +683,17 @@ public class EventQuery
 	 * @param target アクションを実行するオブジェクト
 	 * @param action ターゲット上の書き込み可能なプロパティまたはメソッドの名前
 	 * @param property 受信イベントの読み込み可能なプロパティの完全指定された名前 
+	 * @return このオブジェクト
 	 * @see FocusListener#focusGained(java.awt.event.FocusEvent)
 	 */
-	public void focus(Object target, String action, String property)
+	public EventQuery focus(Object target, String action, String property)
 	{
-		FocusListener handler = EventHandler.create(FocusListener.class, target, action, property, "focusGained");
+		FocusListener focusGained = EventHandler.create(FocusListener.class, target, action, property, "focusGained");
 		for (Component child : list)
 		{
-			child.addFocusListener(handler);
+			child.addFocusListener(focusGained);
 		}
+		return this;
 	}
 
 	/**
@@ -709,15 +702,17 @@ public class EventQuery
 	 * @param target アクションを実行するオブジェクト
 	 * @param action ターゲット上の書き込み可能なプロパティまたはメソッドの名前
 	 * @param property 受信イベントの読み込み可能なプロパティの完全指定された名前 
+	 * @return このオブジェクト
 	 * @see FocusListener#focusLost(java.awt.event.FocusEvent)
 	 */
-	public void blur(Object target, String action, String property)
+	public EventQuery blur(Object target, String action, String property)
 	{
-		FocusListener handler = EventHandler.create(FocusListener.class, target, action, property, "focusLost");
+		FocusListener focusLost = EventHandler.create(FocusListener.class, target, action, property, "focusLost");
 		for (Component child : list)
 		{
-			child.addFocusListener(handler);
+			child.addFocusListener(focusLost);
 		}
+		return this;
 	}
 
 	/**
@@ -726,15 +721,17 @@ public class EventQuery
 	 * @param target アクションを実行するオブジェクト
 	 * @param action ターゲット上の書き込み可能なプロパティまたはメソッドの名前
 	 * @param property 受信イベントの読み込み可能なプロパティの完全指定された名前 
+	 * @return このオブジェクト
 	 * @see KeyListener#keyPressed(java.awt.event.KeyEvent)
 	 */
-	public void keydown(Object target, String action, String property)
+	public EventQuery keydown(Object target, String action, String property)
 	{
-		KeyListener handler = EventHandler.create(KeyListener.class, target, action, property, "keyPressed");
+		KeyListener keyPressed = EventHandler.create(KeyListener.class, target, action, property, "keyPressed");
 		for (Component child : list)
 		{
-			child.addKeyListener(handler);
+			child.addKeyListener(keyPressed);
 		}
+		return this;
 	}
 
 	/**
@@ -743,15 +740,17 @@ public class EventQuery
 	 * @param target アクションを実行するオブジェクト
 	 * @param action ターゲット上の書き込み可能なプロパティまたはメソッドの名前
 	 * @param property 受信イベントの読み込み可能なプロパティの完全指定された名前 
+	 * @return このオブジェクト
 	 * @see KeyListener#keyReleased(java.awt.event.KeyEvent)
 	 */
-	public void keyup(Object target, String action, String property)
+	public EventQuery keyup(Object target, String action, String property)
 	{
-		KeyListener handler = EventHandler.create(KeyListener.class, target, action, property, "keyReleased");
+		KeyListener keyReleased = EventHandler.create(KeyListener.class, target, action, property, "keyReleased");
 		for (Component child : list)
 		{
-			child.addKeyListener(handler);
+			child.addKeyListener(keyReleased);
 		}
+		return this;
 	}
 
 	/**
@@ -760,64 +759,18 @@ public class EventQuery
 	 * @param target アクションを実行するオブジェクト
 	 * @param action ターゲット上の書き込み可能なプロパティまたはメソッドの名前
 	 * @param property 受信イベントの読み込み可能なプロパティの完全指定された名前 
+	 * @return このオブジェクト
 	 * @see KeyListener#keyTyped(java.awt.event.KeyEvent)
 	 */
-	public void keypress(Object target, String action, String property)
+	public EventQuery keypress(Object target, String action, String property)
 	{
-		KeyListener handler = EventHandler.create(KeyListener.class, target, action, property, "keyTyped");
+		KeyListener keyTyped = EventHandler.create(KeyListener.class, target, action, property, "keyTyped");
 		for (Component child : list)
 		{
-			child.addKeyListener(handler);
+			child.addKeyListener(keyTyped);
 		}
+		return this;
 	}
-
-//	/**
-//	 * 入力コンポーネントの値の変更が完了したときのイベントハンドラを登録します。
-//	 * 
-//	 * @param target
-//	 * @param action
-//	 * @param property
-//	 * @see TextListener#textValueChanged(java.awt.event.TextEvent)
-//	 */
-//	public void cahnge(Object target, String action, String property)
-//	{
-//		TextListener handler = EventHandler.create(TextListener.class, target, action, property, "textValueChanged");
-//		for (Component child : list)
-//		{
-//			if (child instanceof TextComponent)
-//			{
-//				((TextComponent)child).addTextListener(handler);
-//			}
-//			else
-//			{
-//				// 何もしない
-//			}
-//		}
-//	}
-
-//	/**
-//	 * 入力コンポーネントの値の変更が完了したときのイベントハンドラを登録します。
-//	 * 
-//	 * @param target
-//	 * @param action
-//	 * @param property
-//	 * @see TextListener#textValueChanged(java.awt.event.TextEvent)
-//	 */
-//	public void cahnge(Object target, String action, String property)
-//	{
-//		TextListener handler = EventHandler.create(TextListener.class, target, action, property, "textValueChanged");
-//		for (Component child : list)
-//		{
-//			if (child instanceof TextComponent)
-//			{
-//				((TextComponent)child).addTextListener(handler);
-//			}
-//			else
-//			{
-//				// 何もしない
-//			}
-//		}
-//	}
 
 	/**
 	 * 入力コンポーネントの値の変更が完了したときのイベントハンドラを登録します。
@@ -938,13 +891,13 @@ public class EventQuery
 	{
 		for (Component child : list)
 		{
-			if (child instanceof TextComponent)
+			if (TextComponent.class.isInstance(child))
 			{
-				((TextComponent)child).setText(str);
+				TextComponent.class.cast(child).setText(str);
 			}
-			else if (child instanceof JTextComponent)
+			else if (JTextComponent.class.isInstance(child))
 			{
-				((JTextComponent)child).setText(str);
+				JTextComponent.class.cast(child).setText(str);
 			}
 			else
 			{
@@ -963,13 +916,13 @@ public class EventQuery
 		StringBuilder text = new StringBuilder();
 		for (Component child : list)
 		{
-			if (child instanceof TextComponent)
+			if (TextComponent.class.isInstance(child))
 			{
-				text.append(((TextComponent)child).getText());
+				text.append(TextComponent.class.cast(child).getText());
 			}
-			else if (child instanceof JTextComponent)
+			else if (JTextComponent.class.isInstance(child))
 			{
-				text.append(((JTextComponent)child).getText());
+				text.append(JTextComponent.class.cast(child).getText());
 			}
 			else
 			{
@@ -1146,24 +1099,4 @@ public class EventQuery
 
 		return false;
 	}
-
-//	/**
-//	 * コンポーネントのリストを返します。
-//	 * 
-//	 * @param <T> コンポーネントの型
-//	 * @return コンポーネントのリスト
-//	 */
-//	public <T> List<T> list()
-//	{
-//		ArrayList<T> array = new ArrayList<T>();
-//		for (Component c : list)
-//		{
-////			if (c instanceof T)
-//			{
-////				array.add((T)c);
-//			}
-//		}
-//
-//		return array;
-//	}
 }
