@@ -1020,11 +1020,11 @@ public class EventQuery
 	/**
 	 * コンポーネントの配列を返します。
 	 * 
+	 * @deprecated {@link #list(Class)} を使用します。
 	 * @param <T> コンポーネントの型
 	 * @return コンポーネントの配列
 	 */
 	@SuppressWarnings("unchecked")
-	@Deprecated
 	public <T> T[] list()
 	{
 		ArrayList<T> sublist = new ArrayList<T>();
@@ -1044,7 +1044,7 @@ public class EventQuery
 	}
 
 	/**
-	 * コンポーネントの配列を返します。
+	 * 指定された型に一致するコンポーネントのリストを返します。
 	 * 
 	 * @param type コンポーネントの型
 	 * @return コンポーネントの配列
@@ -1054,7 +1054,10 @@ public class EventQuery
 		ArrayList<T> sublist = new ArrayList<T>();
 		for (Component child : list)
 		{
-			sublist.add(type.cast(child));
+			if (type.isInstance(child))
+			{
+				sublist.add(type.cast(child));
+			}
 		}
 
 		return sublist;
@@ -1077,6 +1080,44 @@ public class EventQuery
 		}
 
 		return new int[0];
+	}
+
+	/**
+	 * 選択された項目を返します。
+	 * 項目が選択されない場合は、空の配列を返します。
+	 * 
+	 * @return 選択された項目
+	 * @see JTable#getValueAt(int, int)
+	 * @see ItemSelectable#getSelectedObjects()
+	 */
+	public Object[] selectedObjects()
+	{
+		for (Component child : list)
+		{
+			if (child instanceof JTable)
+			{
+				JTable table = ((JTable)child);
+				int[] rows = table.getSelectedRows();
+				int col = table.getSelectedColumn();
+				ArrayList<Object> sublist = new ArrayList<Object>();
+				for (int index : rows)
+				{
+					sublist.add(table.getValueAt(index, col));
+				}
+				return sublist.toArray();
+			}
+			else if (child instanceof ItemSelectable)
+			{
+				ItemSelectable selector = (ItemSelectable)child;
+				return selector.getSelectedObjects();
+			}
+			else
+			{
+				// ignore
+			}
+		}
+
+		return new Object[0];
 	}
 
 	/**
