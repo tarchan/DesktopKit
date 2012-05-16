@@ -11,6 +11,7 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.ItemSelectable;
 import java.awt.TextComponent;
+import java.awt.Window;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentListener;
 import java.awt.event.FocusListener;
@@ -46,6 +47,8 @@ import javax.swing.text.JTextComponent;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
+import com.mac.tarchan.desktop.DesktopSupport;
 
 /**
  * EventQuery
@@ -233,6 +236,18 @@ public class EventQuery
 		}
 
 		return this;
+	}
+
+	/**
+	 * 最上位のコンポーネントを検索します。
+	 * 
+	 * @return 新しい EventQuery オブジェクト
+	 */
+	public EventQuery root()
+	{
+		Window root = DesktopSupport.componentOwner(list.iterator().next(), Window.class);
+		EventQuery query = EventQuery.from(root);
+		return query;
 	}
 
 	/**

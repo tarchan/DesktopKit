@@ -26,7 +26,6 @@ public class ProgressListener implements PropertyChangeListener
 	{
 		this.bar = bar;
 		bar.setIndeterminate(true);
-		bar.setVisible(true);
 	}
 
 	public void propertyChange(PropertyChangeEvent evt)
