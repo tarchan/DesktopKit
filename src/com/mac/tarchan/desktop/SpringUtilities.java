@@ -116,7 +116,7 @@ public class SpringUtilities
 	}
 
 	/* Used by makeCompactGrid. */
-	private static SpringLayout.Constraints getConstraintsForCell(int row, int col, Container parent, int cols)
+	private static SpringLayout.Constraints getConstraintsAt(int row, int col, Container parent, int cols)
 	{
 		SpringLayout layout = (SpringLayout)parent.getLayout();
 		Component c = parent.getComponent(row * cols + col);
@@ -158,11 +158,11 @@ public class SpringUtilities
 			Spring width = Spring.constant(0);
 			for (int r = 0; r < rows; r++)
 			{
-				width = Spring.max(width, getConstraintsForCell(r, c, parent, cols).getWidth());
+				width = Spring.max(width, getConstraintsAt(r, c, parent, cols).getWidth());
 			}
 			for (int r = 0; r < rows; r++)
 			{
-				SpringLayout.Constraints constraints = getConstraintsForCell(r, c, parent, cols);
+				SpringLayout.Constraints constraints = getConstraintsAt(r, c, parent, cols);
 				constraints.setX(x);
 				constraints.setWidth(width);
 			}
@@ -176,11 +176,11 @@ public class SpringUtilities
 			Spring height = Spring.constant(0);
 			for (int c = 0; c < cols; c++)
 			{
-				height = Spring.max(height, getConstraintsForCell(r, c, parent, cols).getHeight());
+				height = Spring.max(height, getConstraintsAt(r, c, parent, cols).getHeight());
 			}
 			for (int c = 0; c < cols; c++)
 			{
-				SpringLayout.Constraints constraints = getConstraintsForCell(r, c, parent, cols);
+				SpringLayout.Constraints constraints = getConstraintsAt(r, c, parent, cols);
 				constraints.setY(y);
 				constraints.setHeight(height);
 			}

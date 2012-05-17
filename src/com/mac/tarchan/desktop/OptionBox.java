@@ -11,6 +11,7 @@ import java.awt.event.ActionListener;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ActionMap;
+import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.InputMap;
 import javax.swing.JButton;
@@ -18,7 +19,6 @@ import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
-import javax.swing.border.EmptyBorder;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -61,7 +61,7 @@ public class OptionBox extends JDialog
 	public OptionBox(Window owner)
 	{
 		super(owner);
-		mainBox.setBorder(new EmptyBorder(12, 12, 12, 12));
+		mainBox.setBorder(BorderFactory.createEmptyBorder(12, 12, 12, 12));
 		add(mainBox, BorderLayout.CENTER);
 		useDocumentModalSheet();
 		setActionMap();
@@ -145,7 +145,7 @@ public class OptionBox extends JDialog
 		actionBox.add(cancelButton);
 		actionBox.add(okButton);
 		actionBox.add(Box.createHorizontalStrut(12));
-		actionBox.setBorder(new EmptyBorder(0, 12, 12, 12));
+		actionBox.setBorder(BorderFactory.createEmptyBorder(0, 12, 12, 12));
 		add(actionBox, BorderLayout.SOUTH);
 		getRootPane().setDefaultButton(okButton);
 	}

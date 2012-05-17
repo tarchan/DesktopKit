@@ -5,10 +5,10 @@ package com.mac.tarchan.desktop;
 
 import java.awt.Dimension;
 
+import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JSeparator;
-import javax.swing.border.EmptyBorder;
 
 /**
  * ステータスバーを生成します。
@@ -22,7 +22,7 @@ public class StatusBar extends Box
 	public StatusBar()
 	{
 		super(BoxLayout.LINE_AXIS);
-		setBorder(new EmptyBorder(2, 4, 2, 4));
+		setBorder(BorderFactory.createEmptyBorder(2, 4, 2, 4));
 	}
 
 	/**
@@ -35,7 +35,7 @@ public class StatusBar extends Box
 		JSeparator sep = new JSeparator(JSeparator.VERTICAL);
 		sep.setMaximumSize(new Dimension(2, 16));
 		sep.setMinimumSize(new Dimension(2, 16));
-//		sep.setBorder(new EmptyBorder(8, 8, 8, 8));
+//		sep.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
 
 		add(Box.createRigidArea(new Dimension(4, 4)));
 		add(sep);

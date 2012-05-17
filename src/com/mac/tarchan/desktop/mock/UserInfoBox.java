@@ -4,13 +4,13 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Window;
 
+import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import com.mac.tarchan.desktop.DesktopSupport;
@@ -52,7 +52,7 @@ public class UserInfoBox
 		JButton close = new JButton("閉じる");
 
 		Box box = Box.createHorizontalBox();
-		box.setBorder(new EmptyBorder(4, 12, 4, 12));
+		box.setBorder(BorderFactory.createEmptyBorder(4, 12, 4, 12));
 		box.add(Box.createHorizontalGlue());
 		box.add(update);
 		box.add(save);
